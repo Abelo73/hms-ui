@@ -1,0 +1,233 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  Users,
+  Calendar,
+  FileText,
+  Settings,
+  Menu,
+  X,
+  CheckCircle,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  PieChart,
+  Shield,
+  Activity,
+  Pill,
+  FlaskConical,
+  Syringe,
+  Heart,
+  Thermometer,
+  ClipboardCheck,
+  Droplets,
+  Clock,
+  AlertTriangle,
+  Stethoscope,
+  Beaker
+} from 'lucide-react';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { useSidebar } from '@/contexts/SidebarContext';
+import { cn } from '@/lib/utils';
+
+export function Sidebar() {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
+  const { user, logout } = useAuth();
+  const { isCollapsed, toggleSidebar } = useSidebar();
+
+  const isAdmin = user?.roles?.includes('ADMIN');
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  const getInitials = (firstName?: string, lastName?: string) => {
+    return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+  };
+
+  const sections = [
+    {
+      id: 'overview',
+      items: [
+        { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+      ]
+    },
+    {
+      id: 'people',
+      items: [
+        { icon: Users, label: 'Patients', path: '/patients' },
+        ...(isAdmin ? [{ icon: Users, label: 'Users', path: '/users' }] : []),
+      ]
+    },
+    {
+      id: 'medical',
+      items: [
+        { icon: Activity, label: 'Allergies', path: '/medical/allergies' },
+        { icon: Pill, label: 'Medications', path: '/medical/medications' },
+        { icon: FlaskConical, label: 'Lab Results', path: '/medical/lab-results' },
+        { icon: Syringe, label: 'Vaccinations', path: '/medical/vaccinations' },
+        { icon: FileText, label: 'Medical History', path: '/medical/history' },
+        { icon: Stethoscope, label: 'Consultations', path: '/doctors/consultations' },
+        { icon: Beaker, label: 'Lab Worklist', path: '/laboratory/worklist' },
+      ]
+    },
+    {
+      id: 'nursing',
+      items: [
+        { icon: Heart, label: 'Care Plans', path: '/nursing/care-plans' },
+        { icon: Thermometer, label: 'Vital Signs', path: '/nursing/vital-signs' },
+        { icon: ClipboardCheck, label: 'Tasks', path: '/nursing/tasks' },
+        { icon: Syringe, label: 'Medications', path: '/nursing/medication-administrations' },
+        { icon: FileText, label: 'Nursing Notes', path: '/nursing/notes' },
+        { icon: AlertTriangle, label: 'Incident Reports', path: '/nursing/incident-reports' },
+        { icon: Stethoscope, label: 'Assessments', path: '/nursing/assessments' },
+        { icon: Heart, label: 'Wound Care', path: '/nursing/wound-care' },
+        { icon: Droplets, label: 'Fluid Balance', path: '/nursing/fluid-balance' },
+        { icon: Clock, label: 'Nursing Shifts', path: '/nursing/shifts' },
+      ]
+    },
+    {
+      id: 'operations',
+      items: [
+        { icon: Calendar, label: 'Appointments', path: '/appointments' },
+        { icon: FileText, label: 'Documents', path: '/documents' },
+        { icon: PieChart, label: 'Reports', path: '/reports' },
+      ]
+    },
+    {
+      id: 'admin',
+      items: [
+        ...(isAdmin ? [
+          { icon: CheckCircle, label: 'Approvals', path: '/approvals' },
+          { icon: Shield, label: 'Roles', path: '/roles' }
+        ] : []),
+        { icon: Settings, label: 'Settings', path: '/profile' },
+      ]
+    }
+  ];
+
+  return (
+    <>
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg border border-zinc-200 shadow-sm hover:bg-zinc-50"
+      >
+        {isMobileOpen ? <X className="size-5 text-zinc-600" /> : <Menu className="size-5 text-zinc-600" />}
+      </button>
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-40 h-screen bg-white border-r border-zinc-200 transition-all duration-300 ease-in-out",
+          isCollapsed ? "w-14" : "w-[220px]",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
+      >
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="flex items-center h-14 px-4 border-b border-zinc-100">
+            <div className="flex items-center gap-3 overflow-hidden">
+              <div className="flex-shrink-0 size-8 bg-zinc-900 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-[10px]">HMS</span>
+              </div>
+              {!isCollapsed && (
+                <span className="font-semibold text-zinc-900 text-sm whitespace-nowrap">
+                  Hospital Management
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden">
+            {sections.map((section, idx) => (
+              <div key={section.id}>
+                {idx > 0 && <div className="border-t border-zinc-100 my-2 mx-3" />}
+                <div className="space-y-0.5">
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
+
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={cn(
+                          "flex items-center rounded-md transition-colors duration-200 mx-2 py-1.5",
+                          isCollapsed ? "justify-center px-0" : "px-3",
+                          isActive
+                            ? "bg-zinc-900 text-white"
+                            : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                        )}
+                        title={isCollapsed ? item.label : undefined}
+                      >
+                        <Icon className={cn("size-4 flex-shrink-0", isCollapsed ? "" : "mr-2.5")} />
+                        {!isCollapsed && (
+                          <span className="text-sm font-medium truncate">{item.label}</span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+
+          {/* User Profile */}
+          <div className="p-3 border-t border-zinc-100 bg-zinc-50/50">
+            <div className={cn(
+              "flex items-center p-1",
+              isCollapsed ? "justify-center" : "gap-3"
+            )}>
+              <div className="size-8 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-700 text-xs font-semibold flex-shrink-0 overflow-hidden ring-1 ring-zinc-200">
+                {getInitials(user?.firstName, user?.lastName)}
+              </div>
+              {!isCollapsed && (
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-zinc-900 truncate">
+                    {user?.firstName} {user?.lastName}
+                  </p>
+                  <p className="text-[11px] text-zinc-400 truncate capitalize">
+                    {user?.roles?.[0]?.toLowerCase() || 'User'}
+                  </p>
+                </div>
+              )}
+              {!isCollapsed && (
+                <button
+                  onClick={handleLogout}
+                  className="p-1 text-zinc-400 hover:text-zinc-900 transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="size-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Collapse Toggle */}
+          <button
+            onClick={toggleSidebar}
+            className="absolute -right-3 top-20 hidden lg:flex size-6 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 hover:text-zinc-600 shadow-sm z-50"
+          >
+            {isCollapsed ? <ChevronRight className="size-3.5" /> : <ChevronLeft className="size-3.5" />}
+          </button>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {isMobileOpen && (
+        <div
+          onClick={() => setIsMobileOpen(false)}
+          className="fixed inset-0 bg-zinc-900/20 backdrop-blur-[2px] z-30 lg:hidden"
+        />
+      )}
+    </>
+  );
+}
