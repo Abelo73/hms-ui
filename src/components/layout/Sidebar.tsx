@@ -54,12 +54,14 @@ export function Sidebar() {
   const sections = [
     {
       id: 'overview',
+      label: 'Overview',
       items: [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
       ]
     },
     {
       id: 'people',
+      label: 'Patient Management',
       items: [
         { icon: Users, label: 'Patients', path: '/patients' },
         ...(isAdmin ? [{ icon: Users, label: 'Users', path: '/users' }] : []),
@@ -67,6 +69,7 @@ export function Sidebar() {
     },
     {
       id: 'medical',
+      label: 'Medical Services',
       items: [
         { icon: Activity, label: 'Allergies', path: '/medical/allergies' },
         { icon: Pill, label: 'Medications', path: '/medical/medications' },
@@ -79,6 +82,7 @@ export function Sidebar() {
     },
     {
       id: 'nursing',
+      label: 'Nursing Care',
       items: [
         { icon: Heart, label: 'Care Plans', path: '/nursing/care-plans' },
         { icon: Thermometer, label: 'Vital Signs', path: '/nursing/vital-signs' },
@@ -94,6 +98,7 @@ export function Sidebar() {
     },
     {
       id: 'operations',
+      label: 'Operations',
       items: [
         { icon: Calendar, label: 'Appointments', path: '/appointments' },
         { icon: FileText, label: 'Documents', path: '/documents' },
@@ -102,6 +107,7 @@ export function Sidebar() {
     },
     {
       id: 'admin',
+      label: 'Administration',
       items: [
         ...(isAdmin ? [
           { icon: CheckCircle, label: 'Approvals', path: '/approvals' },
@@ -146,10 +152,16 @@ export function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden">
-            {sections.map((section, idx) => (
-              <div key={section.id}>
-                {idx > 0 && <div className="border-t border-zinc-100 my-2 mx-3" />}
+          <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-200">
+            {sections.map((section) => (
+              <div key={section.id} className="mb-6 last:mb-0">
+                {!isCollapsed && (
+                  <div className="px-5 mb-2">
+                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.1em] leading-none">
+                      {section.label}
+                    </span>
+                  </div>
+                )}
                 <div className="space-y-0.5">
                   {section.items.map((item) => {
                     const Icon = item.icon;
@@ -160,17 +172,24 @@ export function Sidebar() {
                         key={item.path}
                         to={item.path}
                         className={cn(
-                          "flex items-center rounded-md transition-colors duration-200 mx-2 py-1.5",
+                          "group relative flex items-center transition-all duration-200 mx-2 py-2 rounded-lg",
                           isCollapsed ? "justify-center px-0" : "px-3",
                           isActive
-                            ? "bg-zinc-900 text-white"
-                            : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                            ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
+                            : "text-zinc-500 hover:bg-zinc-100/80 hover:text-zinc-900"
                         )}
                         title={isCollapsed ? item.label : undefined}
                       >
-                        <Icon className={cn("size-4 flex-shrink-0", isCollapsed ? "" : "mr-2.5")} />
+                        <Icon className={cn(
+                          "size-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
+                          isCollapsed ? "" : "mr-2.5",
+                          isActive ? "text-white" : "text-zinc-400 group-hover:text-zinc-900"
+                        )} />
                         {!isCollapsed && (
-                          <span className="text-sm font-medium truncate">{item.label}</span>
+                          <span className="text-sm font-medium truncate tracking-tight">{item.label}</span>
+                        )}
+                        {isActive && !isCollapsed && (
+                          <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-1 h-5 bg-zinc-900 rounded-r-full" />
                         )}
                       </Link>
                     );

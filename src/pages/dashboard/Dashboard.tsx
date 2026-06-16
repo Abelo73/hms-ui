@@ -57,16 +57,33 @@ const quickActions = [
   { title: 'Generate Report', sub: 'Analytics and insights', icon: BarChart3, path: '/reports' },
 ];
 
+import { StatCards } from './components/StatCards';
+
 export function Dashboard() {
   const navigate = useNavigate();
   return (
     <MainLayout
       pageTitle="Dashboard"
       pageAction={
-        <div className="text-xs text-zinc-400">Last updated: Jun 1, 2026</div>
+        <div className="flex items-center gap-3">
+          <div className="flex flex-col items-end">
+            <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Hospital Status</span>
+            <span className="text-[10px] text-zinc-400">Live • Updated 1m ago</span>
+          </div>
+          <div className="w-px h-8 bg-zinc-200 mx-1" />
+          <div className="text-xs text-zinc-400">Jun 16, 2026</div>
+        </div>
       }
     >
       <div className="space-y-6">
+        {/* Welcome Header */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-zinc-900 tracking-tight">System Overview</h2>
+          <p className="text-sm text-zinc-500 mt-1">Welcome back. Here's what's happening across the hospital today.</p>
+        </div>
+
+        {/* Stat Cards */}
+        <StatCards />
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-stretch">
           {/* Admissions Chart */}
