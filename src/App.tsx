@@ -32,6 +32,10 @@ import { FluidBalancePage } from './pages/nursing/FluidBalancePage';
 import { NursingShiftsPage } from './pages/nursing/NursingShiftsPage';
 import { ConsultationsPage } from './pages/doctors/ConsultationsPage';
 import { LabWorklistPage } from './pages/laboratory/LabWorklistPage';
+import { InventoryPage } from './pages/inventory/InventoryPage';
+import { InventoryItemsPage } from './pages/inventory/InventoryItemsPage';
+import { PrescriptionsPage } from './pages/pharmacy/PrescriptionsPage';
+import { DispensingPage } from './pages/pharmacy/DispensingPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -239,6 +243,38 @@ function App() {
               element={
                 <ProtectedRoute>
                   <LabWorklistPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/inventory"
+              element={
+                <ProtectedRoute>
+                  <InventoryPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/inventory/items"
+              element={
+                <ProtectedRoute>
+                  <InventoryItemsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pharmacy/prescriptions"
+              element={
+                <ProtectedRoute>
+                  <PrescriptionsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pharmacy/dispense/:id"
+              element={
+                <ProtectedRoute>
+                  <DispensingPage />
                 </ProtectedRoute>
               }
             />

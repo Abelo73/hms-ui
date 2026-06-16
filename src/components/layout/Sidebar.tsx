@@ -26,7 +26,9 @@ import {
   Clock,
   AlertTriangle,
   Stethoscope,
-  Beaker
+  Beaker,
+  Package,
+  Truck
 } from 'lucide-react';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { useSidebar } from '@/contexts/SidebarContext';
@@ -61,7 +63,7 @@ export function Sidebar() {
     }
 
     const currentPath = location.pathname;
-    const activeSection = sections.find(section => 
+    const activeSection = sections.find(section =>
       section.items.some(item => item.path === currentPath)
     );
 
@@ -127,6 +129,25 @@ export function Sidebar() {
         { icon: Calendar, label: 'Appointments', path: '/appointments' },
         { icon: FileText, label: 'Documents', path: '/documents' },
         { icon: PieChart, label: 'Reports', path: '/reports' },
+      ]
+    },
+    {
+      id: 'inventory',
+      label: 'Inventory Management',
+      items: [
+        { icon: Package, label: 'Dashboard', path: '/inventory' },
+        { icon: Package, label: 'Item Catalog', path: '/inventory/items' },
+        { icon: Truck, label: 'Procurement', path: '/inventory/procurement' },
+        { icon: Droplets, label: 'Stock Levels', path: '/inventory/stock' },
+      ]
+    },
+    {
+      id: 'pharmacy',
+      label: 'Pharmacy',
+      items: [
+        { icon: Pill, label: 'Prescriptions', path: '/pharmacy/prescriptions' },
+        { icon: Activity, label: 'Dispensing', path: '/pharmacy/prescriptions' }, // Link to same list for now
+        { icon: Beaker, label: 'Drug Catalog', path: '/pharmacy/drugs' },
       ]
     },
     {
