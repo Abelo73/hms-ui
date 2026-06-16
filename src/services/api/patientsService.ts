@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiClient from './axios';
 import type { Patient, CreatePatientRequest, UpdatePatientRequest } from '@/types/patient';
 
 export type { Patient, CreatePatientRequest, UpdatePatientRequest };
@@ -13,119 +13,53 @@ export interface PaginatedResponse<T> {
   last: boolean;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
-
 export const patientsService = {
-  async getAllPatientsPaginated(
-    page = 0,
-    size = 10,
-    sortBy = 'createdAt',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Patient>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getAllPatientsPaginated(page = 0, size = 10, sortBy = 'createdAt', sortDirection = 'desc'): Promise<PaginatedResponse<Patient>> {
+    const response = await apiClient.get('/patients', { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async getAllPatients(): Promise<Patient[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get('/patients');
     return response.data.data;
   },
 
   async getPatientById(id: string): Promise<Patient> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/patients/${id}`);
     return response.data.data;
   },
 
   async getPatientByMedicalRecordNumber(medicalRecordNumber: string): Promise<Patient> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients/mrn/${medicalRecordNumber}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/patients/mrn/${medicalRecordNumber}`);
     return response.data.data;
   },
 
-  async searchPatientsPaginated(
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'createdAt',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Patient>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async searchPatientsPaginated(searchTerm: string, page = 0, size = 10, sortBy = 'createdAt', sortDirection = 'desc'): Promise<PaginatedResponse<Patient>> {
+    const response = await apiClient.get('/patients/search', { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async searchPatients(searchTerm: string): Promise<Patient[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients/search`, {
-      params: { searchTerm },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get('/patients/search', { params: { searchTerm } });
     return response.data.data;
   },
 
   async getPatientsByStatus(status: string): Promise<Patient[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/patients/status/${status}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/patients/status/${status}`);
     return response.data.data;
   },
 
   async createPatient(request: CreatePatientRequest): Promise<Patient> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/patients`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.post('/patients', request);
     return response.data.data;
   },
 
   async updatePatient(id: string, request: UpdatePatientRequest): Promise<Patient> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/patients/${id}`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.put(`/patients/${id}`, request);
     return response.data.data;
   },
 
   async deletePatient(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/patients/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await apiClient.delete(`/patients/${id}`);
   },
 };

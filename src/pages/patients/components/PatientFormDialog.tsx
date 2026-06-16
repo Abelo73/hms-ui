@@ -35,8 +35,7 @@ export function PatientFormDialog({ isOpen, onClose, onSuccess, editingPatient }
     currentMedications: '',
     insuranceProvider: '',
     insurancePolicyNumber: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingPatient) {
@@ -61,8 +60,7 @@ export function PatientFormDialog({ isOpen, onClose, onSuccess, editingPatient }
         currentMedications: editingPatient.currentMedications || '',
         insuranceProvider: editingPatient.insuranceProvider || '',
         insurancePolicyNumber: editingPatient.insurancePolicyNumber || '',
-        notes: editingPatient.notes || '',
-      });
+        notes: editingPatient.notes || '' });
     }
   }, [editingPatient]);
 
@@ -73,8 +71,7 @@ export function PatientFormDialog({ isOpen, onClose, onSuccess, editingPatient }
     try {
       if (editingPatient) {
         const updateData: UpdatePatientRequest = {
-          ...formData,
-        };
+          ...formData };
         await patientsService.updatePatient(editingPatient.id, updateData);
         toast.success('Patient updated successfully');
       } else {
@@ -104,8 +101,7 @@ export function PatientFormDialog({ isOpen, onClose, onSuccess, editingPatient }
         currentMedications: '',
         insuranceProvider: '',
         insurancePolicyNumber: '',
-        notes: '',
-      });
+        notes: '' });
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to save patient');
     } finally {

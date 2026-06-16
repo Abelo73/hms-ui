@@ -23,8 +23,7 @@ export function VaccinationFormDialog({ isOpen, onClose, onSuccess, editingVacci
     lotNumber: '',
     administeringProviderId: '',
     nextDueDate: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingVaccination) {
@@ -37,8 +36,7 @@ export function VaccinationFormDialog({ isOpen, onClose, onSuccess, editingVacci
         lotNumber: editingVaccination.lotNumber,
         administeringProviderId: editingVaccination.administeringProviderId,
         nextDueDate: editingVaccination.nextDueDate,
-        notes: editingVaccination.notes,
-      });
+        notes: editingVaccination.notes });
     } else if (patientId) {
       setFormData(prev => ({ ...prev, patientId }));
     }
@@ -58,8 +56,7 @@ export function VaccinationFormDialog({ isOpen, onClose, onSuccess, editingVacci
           lotNumber: formData.lotNumber,
           administeringProviderId: formData.administeringProviderId,
           nextDueDate: formData.nextDueDate,
-          notes: formData.notes,
-        };
+          notes: formData.notes };
         await vaccinationsService.updateVaccination(editingVaccination.id, updateData);
         toast.success('Vaccination updated successfully');
       } else {
@@ -77,8 +74,7 @@ export function VaccinationFormDialog({ isOpen, onClose, onSuccess, editingVacci
         lotNumber: '',
         administeringProviderId: '',
         nextDueDate: '',
-        notes: '',
-      });
+        notes: '' });
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to save vaccination');
     } finally {

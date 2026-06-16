@@ -243,6 +243,14 @@ function App() {
               }
             />
             <Route
+              path="/reports"
+              element={
+                <ProtectedRoute>
+                  <ComingSoonPage title="Reports & Analytics" />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/documents"
               element={
                 <ProtectedRoute>

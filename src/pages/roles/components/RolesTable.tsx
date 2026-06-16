@@ -1,4 +1,4 @@
-import { Shield, MoreHorizontal, Key, Users } from 'lucide-react';
+import { Shield, MoreHorizontal, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { Role } from '@/services/api/rolesService';
@@ -9,7 +9,7 @@ interface RolesTableProps {
   onDelete: (role: Role) => void;
 }
 
-export function RolesTable({ roles, onEdit, onDelete }: RolesTableProps) {
+export function RolesTable({ roles, onEdit }: RolesTableProps) {
   return (
     <div className="w-full overflow-hidden border border-zinc-200 rounded-lg bg-white shadow-sm">
       <div className="overflow-x-auto">

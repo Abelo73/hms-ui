@@ -21,8 +21,7 @@ export function CreateUserDialog({ isOpen, onClose, onSuccess }: CreateUserDialo
     firstName: '',
     lastName: '',
     phoneNumber: '',
-    roles: ['RECEPTIONIST'],
-  });
+    roles: ['RECEPTIONIST'] });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +36,7 @@ export function CreateUserDialog({ isOpen, onClose, onSuccess }: CreateUserDialo
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        roles: ['RECEPTIONIST'],
-      });
+        roles: ['RECEPTIONIST'] });
       onClose();
       onSuccess();
     } catch (error: any) {
@@ -54,8 +52,7 @@ export function CreateUserDialog({ isOpen, onClose, onSuccess }: CreateUserDialo
       ...prev,
       roles: prev.roles?.includes(role)
         ? prev.roles.filter(r => r !== role)
-        : [...(prev.roles || []), role],
-    }));
+        : [...(prev.roles || []), role] }));
   };
 
   return (

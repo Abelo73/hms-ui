@@ -18,8 +18,7 @@ export function IncidentReportFormDialog({
   onClose,
   onSuccess,
   editingReport,
-  patientId,
-}: IncidentReportFormDialogProps) {
+  patientId }: IncidentReportFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     incidentType: IncidentType.FALL,
@@ -34,8 +33,7 @@ export function IncidentReportFormDialog({
     outcome: '',
     followUpRequired: false,
     followUpDate: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingReport) {
@@ -52,8 +50,7 @@ export function IncidentReportFormDialog({
         outcome: editingReport.outcome || '',
         followUpRequired: editingReport.followUpRequired,
         followUpDate: editingReport.followUpDate || '',
-        notes: editingReport.notes || '',
-      });
+        notes: editingReport.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -69,8 +66,7 @@ export function IncidentReportFormDialog({
         outcome: '',
         followUpRequired: false,
         followUpDate: '',
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingReport, isOpen]);
 
@@ -97,8 +93,7 @@ export function IncidentReportFormDialog({
         outcome: formData.outcome || undefined,
         followUpRequired: formData.followUpRequired,
         followUpDate: formData.followUpDate || undefined,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingReport) {
         await incidentReportsService.updateIncidentReport(editingReport.id, request as UpdateIncidentReportRequest);

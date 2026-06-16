@@ -20,8 +20,7 @@ export function WoundCareTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: WoundCareTableProps) {
+  onPageChange }: WoundCareTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

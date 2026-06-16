@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface Allergy {
   id: string;
@@ -44,86 +42,36 @@ export interface PaginatedResponse<T> {
 
 export const allergiesService = {
   async getAllergyById(id: string): Promise<Allergy> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/allergies/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/allergies/${id}`);
     return response.data.data;
   },
 
   async getAllergiesByPatientId(patientId: string): Promise<Allergy[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/allergies/patient/${patientId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/allergies/patient/${patientId}`);
     return response.data.data;
   },
 
-  async getAllergiesByPatientIdPaginated(
-    patientId: string,
-    page = 0,
-    size = 10,
-    sortBy = 'onsetDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Allergy>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/allergies/patient/${patientId}/paginated`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getAllergiesByPatientIdPaginated(patientId: string, page = 0, size = 10, sortBy = 'onsetDate', sortDirection = 'desc'): Promise<PaginatedResponse<Allergy>> {
+    const response = await apiClient.get(`/allergies/patient/${patientId}/paginated`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async searchPatientAllergies(
-    patientId: string,
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'onsetDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Allergy>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/allergies/patient/${patientId}/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async searchPatientAllergies(patientId: string, searchTerm: string, page = 0, size = 10, sortBy = 'onsetDate', sortDirection = 'desc'): Promise<PaginatedResponse<Allergy>> {
+    const response = await apiClient.get(`/allergies/patient/${patientId}/search`, { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async createAllergy(request: CreateAllergyRequest): Promise<Allergy> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/allergies`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.post('/allergies', request);
     return response.data.data;
   },
 
   async updateAllergy(id: string, request: UpdateAllergyRequest): Promise<Allergy> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/allergies/${id}`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.put(`/allergies/${id}`, request);
     return response.data.data;
   },
 
   async deleteAllergy(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/allergies/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await apiClient.delete(`/allergies/${id}`);
   },
 };

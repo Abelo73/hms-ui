@@ -16,6 +16,7 @@ export interface ApprovalRequest {
   documentsRequired: boolean;
   documentsVerified: boolean;
   rejectionReason?: string;
+  requiresVerification?: boolean;
 }
 
 export interface ApprovalActionRequest {

@@ -23,8 +23,7 @@ export function DiagnosisFormDialog({ isOpen, onClose, onSuccess, editingDiagnos
     conditionStatus: ConditionStatus.ACTIVE,
     diagnosisDate: new Date().toISOString().split('T')[0],
     resolvedDate: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingDiagnosis) {
@@ -36,8 +35,7 @@ export function DiagnosisFormDialog({ isOpen, onClose, onSuccess, editingDiagnos
         conditionStatus: editingDiagnosis.conditionStatus,
         diagnosisDate: editingDiagnosis.diagnosisDate,
         resolvedDate: editingDiagnosis.resolvedDate || '',
-        notes: editingDiagnosis.notes || '',
-      });
+        notes: editingDiagnosis.notes || '' });
     } else if (medicalRecordId) {
       setFormData(prev => ({ ...prev, medicalRecordId }));
     }
@@ -66,8 +64,7 @@ export function DiagnosisFormDialog({ isOpen, onClose, onSuccess, editingDiagnos
           conditionStatus: formData.conditionStatus,
           diagnosisDate: formData.diagnosisDate,
           resolvedDate: formData.resolvedDate,
-          notes: formData.notes,
-        };
+          notes: formData.notes };
         await diagnosesService.updateDiagnosis(editingDiagnosis.id, updateRequest);
         toast.success('Diagnosis updated successfully');
       } else {
@@ -84,8 +81,7 @@ export function DiagnosisFormDialog({ isOpen, onClose, onSuccess, editingDiagnos
         conditionStatus: ConditionStatus.ACTIVE,
         diagnosisDate: new Date().toISOString().split('T')[0],
         resolvedDate: '',
-        notes: '',
-      });
+        notes: '' });
     } catch (error) {
       console.error('Error saving diagnosis:', error);
       toast.error('Failed to save diagnosis');

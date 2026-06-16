@@ -18,8 +18,7 @@ export function VitalSignFormDialog({
   onClose,
   onSuccess,
   editingVitalSign,
-  patientId,
-}: VitalSignFormDialogProps) {
+  patientId }: VitalSignFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     vitalSignType: VitalSignType.TEMPERATURE,
@@ -43,15 +42,14 @@ export function VitalSignFormDialog({
     height: '',
     weight: '',
     bmi: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingVitalSign) {
       setFormData({
-        vitalSignType: editingVitalSign.vitalSignType as any,
-        recordDate: editingVitalSign.recordDate,
-        recordTime: editingVitalSign.recordTime,
+        vitalSignType: (editingVitalSign.vitalSignType || VitalSignType.TEMPERATURE) as any,
+        recordDate: editingVitalSign.recordDate || editingVitalSign.recordedDate || '',
+        recordTime: editingVitalSign.recordTime || editingVitalSign.recordedTime || '',
         temperature: editingVitalSign.temperature?.toString() || '',
         temperatureUnit: editingVitalSign.temperatureUnit as any || TemperatureUnit.CELSIUS,
         temperatureSite: editingVitalSign.temperatureSite as any || TemperatureSite.ORAL,
@@ -70,8 +68,7 @@ export function VitalSignFormDialog({
         height: editingVitalSign.height?.toString() || '',
         weight: editingVitalSign.weight?.toString() || '',
         bmi: editingVitalSign.bmi?.toString() || '',
-        notes: editingVitalSign.notes || '',
-      });
+        notes: editingVitalSign.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -96,8 +93,7 @@ export function VitalSignFormDialog({
         height: '',
         weight: '',
         bmi: '',
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingVitalSign, isOpen]);
 
@@ -133,8 +129,7 @@ export function VitalSignFormDialog({
         height: formData.height ? parseFloat(formData.height) : undefined,
         weight: formData.weight ? parseFloat(formData.weight) : undefined,
         bmi: formData.bmi ? parseFloat(formData.bmi) : undefined,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingVitalSign) {
         await vitalSignsService.updateVitalSign(editingVitalSign.id, request as UpdateVitalSignRequest);

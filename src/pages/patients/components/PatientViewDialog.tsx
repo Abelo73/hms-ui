@@ -2,7 +2,6 @@ import { X, Mail, Phone, MapPin, Calendar, User, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { Patient } from '@/services/api/patientsService';
-import { Gender, BloodType, PatientStatus } from '@/types/patient';
 
 interface PatientViewDialogProps {
   isOpen: boolean;
@@ -53,9 +52,11 @@ export function PatientViewDialog({ isOpen, onClose, patient }: PatientViewDialo
             <Badge variant="outline" className="bg-zinc-50 text-zinc-700 border-zinc-200">
               {patient.gender.replace(/_/g, ' ')}
             </Badge>
-            <Badge variant="outline" className="bg-zinc-50 text-zinc-700 border-zinc-200">
-              {patient.bloodType.replace(/_/g, ' ')}
-            </Badge>
+            {patient.bloodType && (
+              <Badge variant="outline" className="bg-zinc-50 text-zinc-700 border-zinc-200">
+                {patient.bloodType.replace(/_/g, ' ')}
+              </Badge>
+            )}
           </div>
 
           {/* Personal Information */}
@@ -78,7 +79,7 @@ export function PatientViewDialog({ isOpen, onClose, patient }: PatientViewDialo
               </div>
               <div>
                 <p className="text-xs text-zinc-500 mb-1">Blood Type</p>
-                <p className="text-sm font-medium text-zinc-900">{patient.bloodType.replace(/_/g, ' ')}</p>
+                <p className="text-sm font-medium text-zinc-900">{patient.bloodType?.replace(/_/g, ' ') ?? '—'}</p>
               </div>
               <div>
                 <p className="text-xs text-zinc-500 mb-1">Registration Date</p>

@@ -18,8 +18,7 @@ export function FluidBalanceFormDialog({
   onClose,
   onSuccess,
   editingFluidBalance,
-  patientId,
-}: FluidBalanceFormDialogProps) {
+  patientId }: FluidBalanceFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     recordDate: '',
@@ -34,8 +33,7 @@ export function FluidBalanceFormDialog({
     emesisOutput: 0,
     drainageOutput: 0,
     otherOutput: 0,
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingFluidBalance) {
@@ -52,8 +50,7 @@ export function FluidBalanceFormDialog({
         emesisOutput: editingFluidBalance.emesisOutput,
         drainageOutput: editingFluidBalance.drainageOutput,
         otherOutput: editingFluidBalance.otherOutput,
-        notes: editingFluidBalance.notes || '',
-      });
+        notes: editingFluidBalance.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -69,8 +66,7 @@ export function FluidBalanceFormDialog({
         emesisOutput: 0,
         drainageOutput: 0,
         otherOutput: 0,
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingFluidBalance, isOpen]);
 
@@ -85,7 +81,7 @@ export function FluidBalanceFormDialog({
     try {
       const totalIntake = formData.oralIntake + formData.intravenousIntake + formData.parenteralIntake + formData.bloodProductIntake + formData.otherIntake;
       const totalOutput = formData.urineOutput + formData.stoolOutput + formData.emesisOutput + formData.drainageOutput + formData.otherOutput;
-      const netBalance = totalIntake - totalOutput;
+      void totalIntake; void totalOutput; // calculated server-side
 
       const request = {
         patientId,
@@ -101,8 +97,7 @@ export function FluidBalanceFormDialog({
         emesisOutput: formData.emesisOutput,
         drainageOutput: formData.drainageOutput,
         otherOutput: formData.otherOutput,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingFluidBalance) {
         await fluidBalanceService.updateFluidBalance(editingFluidBalance.id, request as UpdateFluidBalanceRequest);

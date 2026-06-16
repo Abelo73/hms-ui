@@ -26,8 +26,7 @@ export function MedicationFormDialog({ isOpen, onClose, onSuccess, editingMedica
     endDate: '',
     prescribingPhysicianId: '',
     status: MedicationStatus.ACTIVE,
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingMedication) {
@@ -42,8 +41,7 @@ export function MedicationFormDialog({ isOpen, onClose, onSuccess, editingMedica
         endDate: editingMedication.endDate,
         prescribingPhysicianId: editingMedication.prescribingPhysicianId,
         status: editingMedication.status,
-        notes: editingMedication.notes,
-      });
+        notes: editingMedication.notes });
     } else if (patientId) {
       setFormData(prev => ({ ...prev, patientId }));
     }
@@ -65,8 +63,7 @@ export function MedicationFormDialog({ isOpen, onClose, onSuccess, editingMedica
           endDate: formData.endDate,
           prescribingPhysicianId: formData.prescribingPhysicianId,
           status: formData.status,
-          notes: formData.notes,
-        };
+          notes: formData.notes };
         await medicationsService.updateMedication(editingMedication.id, updateData);
         toast.success('Medication updated successfully');
       } else {
@@ -86,8 +83,7 @@ export function MedicationFormDialog({ isOpen, onClose, onSuccess, editingMedica
         endDate: '',
         prescribingPhysicianId: '',
         status: MedicationStatus.ACTIVE,
-        notes: '',
-      });
+        notes: '' });
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to save medication');
     } finally {

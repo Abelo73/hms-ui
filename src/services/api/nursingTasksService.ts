@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface NursingTask {
   id: string;
@@ -34,17 +32,8 @@ export interface CreateNursingTaskRequest {
   notes?: string;
 }
 
-export interface UpdateNursingTaskRequest {
-  taskName: string;
-  taskCategory: string;
-  taskPriority: string;
-  taskStatus: string;
-  dueDate: string;
-  dueTime: string;
-  assignedTo: string;
-  description?: string;
+export interface UpdateNursingTaskRequest extends CreateNursingTaskRequest {
   completedAt?: string;
-  notes?: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -57,147 +46,41 @@ export interface PaginatedResponse<T> {
 
 export const nursingTasksService = {
   async getNursingTaskById(id: string): Promise<NursingTask> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.get(`/nursing/tasks/${id}`);
     return response.data.data;
   },
 
   async getNursingTasksByPatientId(patientId: string): Promise<NursingTask[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/patient/${patientId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.get(`/nursing/tasks/patient/${patientId}`);
     return response.data.data;
   },
 
-  async getNursingTasksByPatientIdPaginated(
-    patientId: string,
-    page = 0,
-    size = 10,
-    sortBy = 'scheduledDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/patient/${patientId}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async getNursingTasksByPatientIdPaginated(patientId: string, page = 0, size = 10, sortBy = 'dueDate', sortDirection = 'asc'): Promise<PaginatedResponse<NursingTask>> {
+    const response = await apiClient.get(`/nursing/tasks/patient/${patientId}`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async getNursingTasksByAssignedTo(
-    assignedTo: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/assigned-to/${assignedTo}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async getNursingTasksByStatus(status: string, page = 0, size = 10, sortBy = 'dueDate', sortDirection = 'asc'): Promise<PaginatedResponse<NursingTask>> {
+    const response = await apiClient.get(`/nursing/tasks/status/${status}`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async getNursingTasksByStatus(
-    status: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/status/${status}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async getNursingTasksByPriority(
-    priority: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/priority/${priority}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async getNursingTasksByCategory(
-    category: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/category/${category}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async getNursingTasksByDateRange(
-    startDate: string,
-    endDate: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/date-range`, {
-      params: { startDate, endDate, page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async searchNursingTasks(
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'dueDate',
-    sortDirection = 'asc'
-  ): Promise<PaginatedResponse<NursingTask>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/tasks/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async searchNursingTasks(searchTerm: string, page = 0, size = 10, sortBy = 'dueDate', sortDirection = 'asc'): Promise<PaginatedResponse<NursingTask>> {
+    const response = await apiClient.get('/nursing/tasks/search', { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async createNursingTask(request: CreateNursingTaskRequest): Promise<NursingTask> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/nursing/tasks`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.post('/nursing/tasks', request);
     return response.data.data;
   },
 
   async updateNursingTask(id: string, request: UpdateNursingTaskRequest): Promise<NursingTask> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/nursing/tasks/${id}`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.put(`/nursing/tasks/${id}`, request);
     return response.data.data;
   },
 
   async deleteNursingTask(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/nursing/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await apiClient.delete(`/nursing/tasks/${id}`);
   },
 };

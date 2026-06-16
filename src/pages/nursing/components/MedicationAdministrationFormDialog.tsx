@@ -18,8 +18,7 @@ export function MedicationAdministrationFormDialog({
   onClose,
   onSuccess,
   editingAdministration,
-  patientId,
-}: MedicationAdministrationFormDialogProps) {
+  patientId }: MedicationAdministrationFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     medicationId: '',
@@ -30,22 +29,20 @@ export function MedicationAdministrationFormDialog({
     frequency: '',
     status: AdministrationStatus.SCHEDULED,
     administeredBy: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingAdministration) {
       setFormData({
-        medicationId: editingAdministration.medicationId,
-        administrationDate: editingAdministration.administrationDate,
-        administrationTime: editingAdministration.administrationTime,
-        medicationRoute: editingAdministration.medicationRoute as any,
-        dosage: editingAdministration.dosage,
-        frequency: editingAdministration.frequency,
-        status: editingAdministration.status as any,
+        medicationId: editingAdministration.medicationId || '',
+        administrationDate: editingAdministration.administrationDate || editingAdministration.scheduledDate || '',
+        administrationTime: editingAdministration.administrationTime || editingAdministration.scheduledTime || '',
+        medicationRoute: (editingAdministration.medicationRoute || editingAdministration.route || MedicationRoute.ORAL) as any,
+        dosage: editingAdministration.dosage || editingAdministration.dose || '',
+        frequency: editingAdministration.frequency || '',
+        status: (editingAdministration.status || editingAdministration.administrationStatus || AdministrationStatus.SCHEDULED) as any,
         administeredBy: editingAdministration.administeredBy || '',
-        notes: editingAdministration.notes || '',
-      });
+        notes: editingAdministration.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -57,8 +54,7 @@ export function MedicationAdministrationFormDialog({
         frequency: '',
         status: AdministrationStatus.SCHEDULED,
         administeredBy: '',
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingAdministration, isOpen]);
 
@@ -81,8 +77,7 @@ export function MedicationAdministrationFormDialog({
         frequency: formData.frequency,
         status: formData.status,
         administeredBy: formData.administeredBy || undefined,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingAdministration) {
         await medicationAdministrationsService.updateMedicationAdministration(editingAdministration.id, request as UpdateMedicationAdministrationRequest);

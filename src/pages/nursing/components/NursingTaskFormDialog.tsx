@@ -18,8 +18,7 @@ export function NursingTaskFormDialog({
   onClose,
   onSuccess,
   editingTask,
-  patientId,
-}: NursingTaskFormDialogProps) {
+  patientId }: NursingTaskFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     taskName: '',
@@ -30,8 +29,7 @@ export function NursingTaskFormDialog({
     dueTime: '',
     assignedTo: '',
     description: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingTask) {
@@ -44,8 +42,7 @@ export function NursingTaskFormDialog({
         dueTime: editingTask.dueTime,
         assignedTo: editingTask.assignedTo,
         description: editingTask.description || '',
-        notes: editingTask.notes || '',
-      });
+        notes: editingTask.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -57,8 +54,7 @@ export function NursingTaskFormDialog({
         dueTime: now.toTimeString().slice(0, 5),
         assignedTo: '',
         description: '',
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingTask, isOpen]);
 
@@ -81,8 +77,7 @@ export function NursingTaskFormDialog({
         dueTime: formData.dueTime,
         assignedTo: formData.assignedTo,
         description: formData.description || undefined,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingTask) {
         await nursingTasksService.updateNursingTask(editingTask.id, request as UpdateNursingTaskRequest);

@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface LabTest {
   id: string;
@@ -48,44 +46,32 @@ export interface CreateLabTestRequest {
 
 export const laboratoryService = {
   async getAllTests(): Promise<LabTest[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/laboratory/tests`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.get('/laboratory/tests');
+    return response.data.data ?? response.data;
   },
 
   async createRequest(request: CreateLabTestRequest): Promise<LabTestRequest> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/laboratory/requests`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.post('/laboratory/requests', request);
+    return response.data.data ?? response.data;
   },
 
   async getRequest(id: string): Promise<LabTestRequest> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/laboratory/requests/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.get(`/laboratory/requests/${id}`);
+    return response.data.data ?? response.data;
+  },
+
+  async getPendingRequests(): Promise<LabTestRequest[]> {
+    const response = await apiClient.get('/laboratory/requests/pending');
+    const result = response.data.data ?? response.data;
+    return Array.isArray(result) ? result : [];
   },
 
   async getPatientRequests(patientId: string): Promise<LabTestRequest[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/laboratory/requests/patient/${patientId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.get(`/laboratory/requests/patient/${patientId}`);
+    return response.data.data ?? response.data;
   },
 
   async updateItemResult(itemId: string, resultValue: string, flag: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.put(`${API_BASE_URL}/laboratory/items/${itemId}/result`, {
-        resultValue,
-        resultFlag: flag
-    }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  }
+    await apiClient.put(`/laboratory/items/${itemId}/result`, { resultValue, resultFlag: flag });
+  },
 };

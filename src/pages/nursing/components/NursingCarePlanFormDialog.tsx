@@ -18,8 +18,7 @@ export function NursingCarePlanFormDialog({
   onClose,
   onSuccess,
   editingCarePlan,
-  patientId,
-}: NursingCarePlanFormDialogProps) {
+  patientId }: NursingCarePlanFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     planName: '',
@@ -29,8 +28,7 @@ export function NursingCarePlanFormDialog({
     goals: '',
     interventions: '',
     evaluation: '',
-    status: CarePlanStatus.ACTIVE,
-  });
+    status: CarePlanStatus.ACTIVE });
 
   useEffect(() => {
     if (editingCarePlan) {
@@ -42,8 +40,7 @@ export function NursingCarePlanFormDialog({
         goals: editingCarePlan.goals,
         interventions: editingCarePlan.interventions,
         evaluation: editingCarePlan.evaluation || '',
-        status: editingCarePlan.status as any,
-      });
+        status: editingCarePlan.status as any });
     } else {
       setFormData({
         planName: '',
@@ -53,8 +50,7 @@ export function NursingCarePlanFormDialog({
         goals: '',
         interventions: '',
         evaluation: '',
-        status: CarePlanStatus.ACTIVE,
-      });
+        status: CarePlanStatus.ACTIVE });
     }
   }, [editingCarePlan, isOpen]);
 
@@ -76,8 +72,7 @@ export function NursingCarePlanFormDialog({
           goals: formData.goals,
           interventions: formData.interventions,
           evaluation: formData.evaluation || undefined,
-          status: formData.status,
-        };
+          status: formData.status };
         await nursingCarePlansService.updateNursingCarePlan(editingCarePlan.id, updateRequest);
         toast.success('Care plan updated successfully');
       } else {
@@ -90,8 +85,7 @@ export function NursingCarePlanFormDialog({
           goals: formData.goals,
           interventions: formData.interventions,
           evaluation: formData.evaluation || undefined,
-          status: formData.status,
-        };
+          status: formData.status };
         await nursingCarePlansService.createNursingCarePlan(createRequest);
         toast.success('Care plan created successfully');
       }

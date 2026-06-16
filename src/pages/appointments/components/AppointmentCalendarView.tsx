@@ -11,8 +11,7 @@ const getStatusColor = (status: string) => {
     COMPLETED: 'bg-emerald-100 text-emerald-800 border border-emerald-300',
     CANCELLED: 'bg-red-100 text-red-800 border border-red-300',
     NO_SHOW: 'bg-gray-100 text-gray-800 border border-gray-300',
-    RESCHEDULED: 'bg-orange-100 text-orange-800 border border-orange-300',
-  };
+    RESCHEDULED: 'bg-orange-100 text-orange-800 border border-orange-300' };
   return colors[status] || 'bg-purple-100 text-purple-800 border border-purple-300';
 };
 
@@ -21,8 +20,7 @@ const getPriorityColor = (priority: string) => {
     LOW: 'bg-green-50 text-green-700 border-l-2 border-green-500',
     MEDIUM: 'bg-yellow-50 text-yellow-700 border-l-2 border-yellow-500',
     HIGH: 'bg-orange-50 text-orange-700 border-l-2 border-orange-500',
-    URGENT: 'bg-red-50 text-red-700 border-l-2 border-red-500',
-  };
+    URGENT: 'bg-red-50 text-red-700 border-l-2 border-red-500' };
   return colors[priority] || 'bg-gray-50 text-gray-700 border-l-2 border-gray-500';
 };
 
@@ -33,8 +31,7 @@ interface AppointmentCalendarViewProps {
 
 export function AppointmentCalendarView({
   appointments,
-  onEdit,
-}: AppointmentCalendarViewProps) {
+  onEdit }: AppointmentCalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const getDaysInMonth = (date: Date) => {

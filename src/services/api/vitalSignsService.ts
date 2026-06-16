@@ -1,13 +1,15 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface VitalSign {
   id: string;
   patientId: string;
   admissionId?: string;
-  recordedDate: string;
-  recordedTime: string;
+  // Support both naming conventions for compatibility
+  recordedDate?: string;
+  recordedTime?: string;
+  recordDate?: string;
+  recordTime?: string;
+  vitalSignType?: string;
   recordedBy?: string;
   temperature?: number;
   temperatureUnit?: string;
@@ -15,9 +17,11 @@ export interface VitalSign {
   systolicBP?: number;
   diastolicBP?: number;
   bloodPressureSite?: string;
+  bloodPressurePosition?: string;
   heartRate?: number;
   heartRateRhythm?: string;
   respiratoryRate?: number;
+  respiratoryPattern?: string;
   oxygenSaturation?: number;
   oxygenSupplement?: boolean;
   oxygenFlowRate?: number;
@@ -42,8 +46,11 @@ export interface VitalSign {
 export interface CreateVitalSignRequest {
   patientId: string;
   admissionId?: string;
-  recordedDate: string;
-  recordedTime: string;
+  recordedDate?: string;
+  recordedTime?: string;
+  recordDate?: string;
+  recordTime?: string;
+  vitalSignType?: string;
   recordedBy?: string;
   temperature?: number;
   temperatureUnit?: string;
@@ -51,9 +58,11 @@ export interface CreateVitalSignRequest {
   systolicBP?: number;
   diastolicBP?: number;
   bloodPressureSite?: string;
+  bloodPressurePosition?: string;
   heartRate?: number;
   heartRateRhythm?: string;
   respiratoryRate?: number;
+  respiratoryPattern?: string;
   oxygenSaturation?: number;
   oxygenSupplement?: boolean;
   oxygenFlowRate?: number;
@@ -71,36 +80,7 @@ export interface CreateVitalSignRequest {
   isAbnormal?: boolean;
 }
 
-export interface UpdateVitalSignRequest {
-  admissionId?: string;
-  recordedDate: string;
-  recordedTime: string;
-  recordedBy?: string;
-  temperature?: number;
-  temperatureUnit?: string;
-  temperatureSite?: string;
-  systolicBP?: number;
-  diastolicBP?: number;
-  bloodPressureSite?: string;
-  heartRate?: number;
-  heartRateRhythm?: string;
-  respiratoryRate?: number;
-  oxygenSaturation?: number;
-  oxygenSupplement?: boolean;
-  oxygenFlowRate?: number;
-  oxygenDeliveryMethod?: string;
-  bloodGlucose?: number;
-  bloodGlucoseUnit?: string;
-  bloodGlucoseTiming?: string;
-  painScore?: number;
-  painScale?: string;
-  height?: number;
-  weight?: number;
-  bmi?: number;
-  headCircumference?: number;
-  notes?: string;
-  isAbnormal?: boolean;
-}
+export interface UpdateVitalSignRequest extends CreateVitalSignRequest {}
 
 export interface PaginatedResponse<T> {
   content: T[];
@@ -112,102 +92,36 @@ export interface PaginatedResponse<T> {
 
 export const vitalSignsService = {
   async getVitalSignById(id: string): Promise<VitalSign> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.get(`/nursing/vital-signs/${id}`);
     return response.data.data;
   },
 
   async getVitalSignsByPatientId(patientId: string): Promise<VitalSign[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/patient/${patientId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.get(`/nursing/vital-signs/patient/${patientId}`);
     return response.data.data;
   },
 
-  async getVitalSignsByPatientIdPaginated(
-    patientId: string,
-    page = 0,
-    size = 10,
-    sortBy = 'recordDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<VitalSign>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/patient/${patientId}/paginated`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async getVitalSignsByPatientIdPaginated(patientId: string, page = 0, size = 10, sortBy = 'recordDate', sortDirection = 'desc'): Promise<PaginatedResponse<VitalSign>> {
+    const response = await apiClient.get(`/nursing/vital-signs/patient/${patientId}/paginated`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async getVitalSignsByType(
-    vitalSignType: string,
-    page = 0,
-    size = 10,
-    sortBy = 'recordDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<VitalSign>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/type/${vitalSignType}`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async getVitalSignsByDateRange(
-    startDate: string,
-    endDate: string,
-    page = 0,
-    size = 10,
-    sortBy = 'recordDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<VitalSign>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/date-range`, {
-      params: { startDate, endDate, page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
-  },
-
-  async searchVitalSigns(
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'recordDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<VitalSign>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/nursing/vital-signs/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async searchVitalSigns(searchTerm: string, page = 0, size = 10, sortBy = 'recordDate', sortDirection = 'desc'): Promise<PaginatedResponse<VitalSign>> {
+    const response = await apiClient.get('/nursing/vital-signs/search', { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async createVitalSign(request: CreateVitalSignRequest): Promise<VitalSign> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/nursing/vital-signs`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.post('/nursing/vital-signs', request);
     return response.data.data;
   },
 
   async updateVitalSign(id: string, request: UpdateVitalSignRequest): Promise<VitalSign> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/nursing/vital-signs/${id}`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.put(`/nursing/vital-signs/${id}`, request);
     return response.data.data;
   },
 
   async deleteVitalSign(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/nursing/vital-signs/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await apiClient.delete(`/nursing/vital-signs/${id}`);
   },
 };

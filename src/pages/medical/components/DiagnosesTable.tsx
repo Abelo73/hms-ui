@@ -23,8 +23,7 @@ export function DiagnosesTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: DiagnosesTableProps) {
+  onPageChange }: DiagnosesTableProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ACTIVE':

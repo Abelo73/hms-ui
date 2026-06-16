@@ -3,7 +3,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, SlidersHorizontal, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { patientsService, type Patient, type PaginatedResponse } from '@/services/api/patientsService';
+import { patientsService, type Patient } from '@/services/api/patientsService';
 import { PatientsTable } from './components/PatientsTable';
 import { PatientFormDialog } from './components/PatientFormDialog';
 import { PatientViewDialog } from './components/PatientViewDialog';
@@ -19,8 +19,7 @@ export function PatientsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadPatients();
@@ -44,8 +43,7 @@ export function PatientsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Failed to load patients:', error);
       toast.error('Failed to load patients');

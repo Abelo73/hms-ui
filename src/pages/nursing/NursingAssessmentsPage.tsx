@@ -20,8 +20,7 @@ export function NursingAssessmentsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadAssessments();
@@ -47,8 +46,7 @@ export function NursingAssessmentsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading nursing assessments:', error);
       toast.error('Failed to load nursing assessments');

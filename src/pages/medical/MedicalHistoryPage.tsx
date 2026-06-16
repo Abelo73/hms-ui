@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, User, X, FileText, Pill, FlaskConical, Syringe, AlertTriangle, Calendar, Filter, Activity, Printer } from 'lucide-react';
+import { Search, User, X, FileText, Pill, FlaskConical, Syringe, AlertTriangle, Calendar, Filter, Printer } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { patientsService, type Patient } from '@/services/api/patientsService';
@@ -43,7 +43,7 @@ export function MedicalHistoryPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {
@@ -87,8 +87,7 @@ export function MedicalHistoryPage() {
           id: allergy.id,
           date: allergy.onsetDate,
           type: 'allergy',
-          data: allergy,
-        });
+          data: allergy });
       });
 
       medications.forEach((medication) => {
@@ -96,8 +95,7 @@ export function MedicalHistoryPage() {
           id: medication.id,
           date: medication.startDate,
           type: 'medication',
-          data: medication,
-        });
+          data: medication });
       });
 
       labResults.forEach((labResult) => {
@@ -105,8 +103,7 @@ export function MedicalHistoryPage() {
           id: labResult.id,
           date: labResult.testDate,
           type: 'lab_result',
-          data: labResult,
-        });
+          data: labResult });
       });
 
       vaccinations.forEach((vaccination) => {
@@ -114,8 +111,7 @@ export function MedicalHistoryPage() {
           id: vaccination.id,
           date: vaccination.administrationDate,
           type: 'vaccination',
-          data: vaccination,
-        });
+          data: vaccination });
       });
 
       medicalRecords.forEach((record) => {
@@ -123,8 +119,7 @@ export function MedicalHistoryPage() {
           id: record.id,
           date: record.recordDate,
           type: 'medical_record',
-          data: record,
-        });
+          data: record });
       });
 
       items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -145,8 +140,7 @@ export function MedicalHistoryPage() {
     medication: timeline.filter(i => i.type === 'medication').length,
     lab_result: timeline.filter(i => i.type === 'lab_result').length,
     vaccination: timeline.filter(i => i.type === 'vaccination').length,
-    medical_record: timeline.filter(i => i.type === 'medical_record').length,
-  };
+    medical_record: timeline.filter(i => i.type === 'medical_record').length };
 
   const getIconForType = (type: string) => {
     switch (type) {

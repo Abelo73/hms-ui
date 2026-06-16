@@ -28,8 +28,7 @@ export function MedicalRecordFormDialog({ isOpen, onClose, onSuccess, editingMed
     title: '',
     description: '',
     clinicalNotes: '',
-    status: RecordStatus.ACTIVE,
-  });
+    status: RecordStatus.ACTIVE });
 
   useEffect(() => {
     if (editingMedicalRecord) {
@@ -40,8 +39,7 @@ export function MedicalRecordFormDialog({ isOpen, onClose, onSuccess, editingMed
         title: editingMedicalRecord.title,
         description: editingMedicalRecord.description || '',
         clinicalNotes: editingMedicalRecord.clinicalNotes || '',
-        status: editingMedicalRecord.status,
-      });
+        status: editingMedicalRecord.status });
     } else if (patientId) {
       setFormData(prev => ({ ...prev, patientId }));
     }
@@ -113,8 +111,7 @@ export function MedicalRecordFormDialog({ isOpen, onClose, onSuccess, editingMed
           title: formData.title,
           description: formData.description,
           clinicalNotes: formData.clinicalNotes,
-          status: formData.status,
-        };
+          status: formData.status };
         await medicalRecordsService.updateMedicalRecord(editingMedicalRecord.id, updateRequest);
         toast.success('Medical record updated successfully');
       } else {
@@ -130,8 +127,7 @@ export function MedicalRecordFormDialog({ isOpen, onClose, onSuccess, editingMed
         title: '',
         description: '',
         clinicalNotes: '',
-        status: RecordStatus.ACTIVE,
-      });
+        status: RecordStatus.ACTIVE });
       setSelectedPatient(null);
     } catch (error) {
       console.error('Error saving medical record:', error);

@@ -20,8 +20,7 @@ export function MedicationAdministrationsTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: MedicationAdministrationsTableProps) {
+  onPageChange }: MedicationAdministrationsTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

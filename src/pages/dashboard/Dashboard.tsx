@@ -1,9 +1,8 @@
 import { MainLayout } from '@/components/layout/MainLayout';
+import { useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
-  FileText, 
-  TrendingUp, 
-  Activity,
+  FileText,
   Plus,
   Stethoscope,
   Upload,
@@ -50,15 +49,16 @@ const recentActivities = [
 ];
 
 const quickActions = [
-  { title: 'Add Patient', sub: 'Register new patient', icon: Plus },
-  { title: 'Schedule Appointment', sub: 'Book new appointments', icon: Calendar },
-  { title: 'Upload Document', sub: 'Add medical records', icon: Upload },
-  { title: 'Start Consultation', sub: 'Begin patient visit', icon: Stethoscope },
-  { title: 'Create Prescription', sub: 'Issue medications', icon: FileText },
-  { title: 'Generate Report', sub: 'Analytics and insights', icon: BarChart3 },
+  { title: 'Add Patient', sub: 'Register new patient', icon: Plus, path: '/patients' },
+  { title: 'Schedule Appointment', sub: 'Book new appointments', icon: Calendar, path: '/appointments' },
+  { title: 'Upload Document', sub: 'Add medical records', icon: Upload, path: '/medical/records' },
+  { title: 'Start Consultation', sub: 'Begin patient visit', icon: Stethoscope, path: '/doctors/consultations' },
+  { title: 'Lab Worklist', sub: 'View pending lab tests', icon: FileText, path: '/laboratory/worklist' },
+  { title: 'Generate Report', sub: 'Analytics and insights', icon: BarChart3, path: '/reports' },
 ];
 
 export function Dashboard() {
+  const navigate = useNavigate();
   return (
     <MainLayout
       pageTitle="Dashboard"
@@ -172,6 +172,7 @@ export function Dashboard() {
                 return (
                   <button 
                     key={action.title}
+                    onClick={() => navigate(action.path)}
                     className="group flex items-start gap-3 bg-white border border-zinc-200 rounded-lg p-4 text-left transition-colors duration-150 hover:border-zinc-400 hover:bg-zinc-50 cursor-pointer"
                   >
                     <Icon className="size-[18px] text-zinc-700 mt-0.5 flex-shrink-0" />

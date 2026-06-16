@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { FileText, Pill, FlaskConical, Syringe, AlertTriangle, Calendar, User, Phone, Mail, MapPin, Activity, Printer } from 'lucide-react';
+import { FileText, Pill, FlaskConical, Syringe, AlertTriangle, Calendar, User, Phone, Mail, MapPin, Printer } from 'lucide-react';
 import { type Patient } from '@/services/api/patientsService';
 import { type Allergy } from '@/services/api/allergiesService';
 import { type Medication } from '@/services/api/medicationsService';
@@ -27,13 +27,9 @@ export function MedicalHistoryPrintView({ patient, timeline }: MedicalHistoryPri
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: `Medical_History_${patient.firstName}_${patient.lastName}`,
-    onBeforeGetContent: () => {
-      console.log('Preparing to print...');
-    },
     onAfterPrint: () => {
       console.log('Print completed');
-    },
-  });
+    } });
 
   const getIconForType = (type: string) => {
     switch (type) {

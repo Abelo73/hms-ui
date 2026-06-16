@@ -20,8 +20,7 @@ export function NursingTasksPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadTasks();
@@ -47,8 +46,7 @@ export function NursingTasksPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading tasks:', error);
       toast.error('Failed to load nursing tasks');

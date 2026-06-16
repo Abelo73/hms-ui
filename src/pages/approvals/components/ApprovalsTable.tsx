@@ -7,7 +7,6 @@ import {
   FileText, 
   User as UserIcon,
   Calendar,
-  MoreVertical,
   ChevronRight
 } from 'lucide-react';
 import type { ApprovalRequest } from '@/services/api/approvalsService';

@@ -11,7 +11,7 @@ interface PatientsTableProps {
   onStatusChange: (patient: Patient) => void;
 }
 
-export function PatientsTable({ patients, onEdit, onDelete, onView, onStatusChange }: PatientsTableProps) {
+export function PatientsTable({ patients, onEdit, onDelete, onView }: PatientsTableProps) {
   return (
     <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
       <table className="w-full">

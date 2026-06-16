@@ -19,8 +19,7 @@ export function UsersPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadUsers();
@@ -37,16 +36,14 @@ export function UsersPage() {
         setPagination(prev => ({
           ...prev,
           totalPages: Math.ceil(result.length / prev.size),
-          totalElements: result.length,
-        }));
+          totalElements: result.length }));
       } else {
         setUsers(result.content || []);
         setPagination({
           page: result.number ?? 0,
           size: result.size ?? pagination.size,
           totalPages: result.totalPages ?? 0,
-          totalElements: result.totalElements ?? 0,
-        });
+          totalElements: result.totalElements ?? 0 });
       }
     } catch (error) {
       console.error('Failed to load users:', error);

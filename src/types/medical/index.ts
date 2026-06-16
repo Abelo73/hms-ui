@@ -5,6 +5,12 @@ export const RecordType = {
   VACCINATION: 'VACCINATION',
   HOSPITALIZATION: 'HOSPITALIZATION',
   MEDICATION: 'MEDICATION',
+  CONSULTATION: 'CONSULTATION',
+  ADMISSION: 'ADMISSION',
+  DISCHARGE: 'DISCHARGE',
+  PRESCRIPTION: 'PRESCRIPTION',
+  REFERRAL: 'REFERRAL',
+  OTHER: 'OTHER',
 } as const;
 
 export type RecordType = (typeof RecordType)[keyof typeof RecordType];
@@ -13,12 +19,15 @@ export const RecordStatus = {
   DRAFT: 'DRAFT',
   FINAL: 'FINAL',
   ARCHIVED: 'ARCHIVED',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
 } as const;
 
 export type RecordStatus = (typeof RecordStatus)[keyof typeof RecordStatus];
 
 export const ConditionStatus = {
   ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
   RESOLVED: 'RESOLVED',
   CHRONIC: 'CHRONIC',
   RECURRING: 'RECURRING',
@@ -78,6 +87,10 @@ export const DiagnosisType = {
   PRIMARY: 'PRIMARY',
   SECONDARY: 'SECONDARY',
   ADMITTING: 'ADMITTING',
+  ADMISSION: 'ADMISSION',
+  DISCHARGE: 'DISCHARGE',
+  PROVISIONAL: 'PROVISIONAL',
+  RULE_OUT: 'RULE_OUT',
 } as const;
 
 export type DiagnosisType = (typeof DiagnosisType)[keyof typeof DiagnosisType];

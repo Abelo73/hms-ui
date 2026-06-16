@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { consultationService, type CreateConsultationRequest } from '@/services/api/consultationService';
 import { toast } from 'sonner';
@@ -22,14 +22,12 @@ export function ConsultationForm({ patientId, doctorId, onSuccess, onCancel }: C
     assessment: '',
     plan: '',
     diagnoses: [{ diagnosisCode: '', diagnosisName: '', type: 'PRIMARY', notes: '' }],
-    prescriptions: [{ medicationName: '', dosage: '', frequency: '', duration: '', instructions: '' }],
-  });
+    prescriptions: [{ medicationName: '', dosage: '', frequency: '', duration: '', instructions: '' }] });
 
   const handleAddDiagnosis = () => {
     setFormData({
       ...formData,
-      diagnoses: [...formData.diagnoses, { diagnosisCode: '', diagnosisName: '', type: 'SECONDARY', notes: '' }],
-    });
+      diagnoses: [...formData.diagnoses, { diagnosisCode: '', diagnosisName: '', type: 'SECONDARY', notes: '' }] });
   };
 
   const handleRemoveDiagnosis = (index: number) => {
@@ -41,8 +39,7 @@ export function ConsultationForm({ patientId, doctorId, onSuccess, onCancel }: C
   const handleAddPrescription = () => {
     setFormData({
       ...formData,
-      prescriptions: [...formData.prescriptions, { medicationName: '', dosage: '', frequency: '', duration: '', instructions: '' }],
-    });
+      prescriptions: [...formData.prescriptions, { medicationName: '', dosage: '', frequency: '', duration: '', instructions: '' }] });
   };
 
   const handleRemovePrescription = (index: number) => {

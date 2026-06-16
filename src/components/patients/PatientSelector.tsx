@@ -24,7 +24,6 @@ export function PatientSelector({
   const [patients, setPatients] = useState<Patient[]>([]);
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showAllPatients, setShowAllPatients] = useState(true);
 
   useEffect(() => {
     loadPatients();
@@ -48,7 +47,7 @@ export function PatientSelector({
     setLoading(true);
     try {
       const results = await patientsService.searchPatients('');
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatients(patientsArray.slice(0, 20));
       setFilteredPatients(patientsArray.slice(0, 20));
     } catch (error) {
@@ -60,7 +59,6 @@ export function PatientSelector({
 
   const handlePatientClick = (patient: Patient) => {
     onPatientSelect(patient);
-    setShowAllPatients(false);
   };
 
   if (selectedPatient) {

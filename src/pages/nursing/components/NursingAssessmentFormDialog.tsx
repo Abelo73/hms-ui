@@ -18,8 +18,7 @@ export function NursingAssessmentFormDialog({
   onClose,
   onSuccess,
   editingAssessment,
-  admissionId,
-}: NursingAssessmentFormDialogProps) {
+  admissionId }: NursingAssessmentFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     assessmentType: AssessmentType.ADMISSION,
@@ -29,8 +28,7 @@ export function NursingAssessmentFormDialog({
     historyOfPresentIllness: '',
     physicalExamination: '',
     riskLevel: RiskLevel.LOW,
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingAssessment) {
@@ -42,8 +40,7 @@ export function NursingAssessmentFormDialog({
         historyOfPresentIllness: editingAssessment.historyOfPresentIllness,
         physicalExamination: editingAssessment.physicalExamination,
         riskLevel: editingAssessment.riskLevel as any,
-        notes: editingAssessment.notes || '',
-      });
+        notes: editingAssessment.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -54,8 +51,7 @@ export function NursingAssessmentFormDialog({
         historyOfPresentIllness: '',
         physicalExamination: '',
         riskLevel: RiskLevel.LOW,
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingAssessment, isOpen]);
 
@@ -69,7 +65,7 @@ export function NursingAssessmentFormDialog({
     setLoading(true);
     try {
       const request = {
-        admissionId,
+        patientId: admissionId,
         assessmentType: formData.assessmentType,
         assessmentDate: formData.assessmentDate,
         assessmentTime: formData.assessmentTime,
@@ -77,8 +73,7 @@ export function NursingAssessmentFormDialog({
         historyOfPresentIllness: formData.historyOfPresentIllness,
         physicalExamination: formData.physicalExamination,
         riskLevel: formData.riskLevel,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingAssessment) {
         await nursingAssessmentsService.updateNursingAssessment(editingAssessment.id, request as UpdateNursingAssessmentRequest);

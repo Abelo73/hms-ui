@@ -18,8 +18,7 @@ export function NursingNoteFormDialog({
   onClose,
   onSuccess,
   editingNote,
-  patientId,
-}: NursingNoteFormDialogProps) {
+  patientId }: NursingNoteFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     noteType: NoteType.NARRATIVE,
@@ -29,8 +28,7 @@ export function NursingNoteFormDialog({
     content: '',
     assessment: '',
     intervention: '',
-    response: '',
-  });
+    response: '' });
 
   useEffect(() => {
     if (editingNote) {
@@ -42,8 +40,7 @@ export function NursingNoteFormDialog({
         content: editingNote.content,
         assessment: editingNote.assessment || '',
         intervention: editingNote.intervention || '',
-        response: editingNote.response || '',
-      });
+        response: editingNote.response || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -54,8 +51,7 @@ export function NursingNoteFormDialog({
         content: '',
         assessment: '',
         intervention: '',
-        response: '',
-      });
+        response: '' });
     }
   }, [editingNote, isOpen]);
 
@@ -77,8 +73,7 @@ export function NursingNoteFormDialog({
         content: formData.content,
         assessment: formData.assessment || undefined,
         intervention: formData.intervention || undefined,
-        response: formData.response || undefined,
-      };
+        response: formData.response || undefined };
 
       if (editingNote) {
         await nursingNotesService.updateNursingNote(editingNote.id, request as UpdateNursingNoteRequest);

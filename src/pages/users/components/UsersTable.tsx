@@ -4,14 +4,11 @@ import {
   MoreHorizontal,
   Shield,
   Mail,
-  Phone,
   CheckCircle2,
   Clock,
   FileCheck,
   XCircle,
-  AlertCircle,
-  User as UserIcon
-} from 'lucide-react';
+  AlertCircle } from 'lucide-react';
 import type { User } from '@/services/api/usersService';
 
 interface UsersTableProps {
@@ -21,7 +18,7 @@ interface UsersTableProps {
   onStatusChange: (user: User, newStatus: string) => void;
 }
 
-export function UsersTable({ users, onEdit, onDelete, onStatusChange }: UsersTableProps) {
+export function UsersTable({ users, onEdit }: UsersTableProps) {
   const getApprovalBadge = (status: string) => {
     switch (status) {
       case 'APPROVED':

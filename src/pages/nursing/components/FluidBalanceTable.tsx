@@ -20,8 +20,7 @@ export function FluidBalanceTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: FluidBalanceTableProps) {
+  onPageChange }: FluidBalanceTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

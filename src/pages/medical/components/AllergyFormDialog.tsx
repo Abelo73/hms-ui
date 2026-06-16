@@ -28,8 +28,7 @@ export function AllergyFormDialog({ isOpen, onClose, onSuccess, editingAllergy, 
     severity: Severity.MILD,
     reaction: '',
     onsetDate: '',
-    reportedBy: '',
-  });
+    reportedBy: '' });
 
   useEffect(() => {
     if (editingAllergy) {
@@ -40,8 +39,7 @@ export function AllergyFormDialog({ isOpen, onClose, onSuccess, editingAllergy, 
         severity: editingAllergy.severity,
         reaction: editingAllergy.reaction,
         onsetDate: editingAllergy.onsetDate,
-        reportedBy: editingAllergy.reportedBy,
-      });
+        reportedBy: editingAllergy.reportedBy });
     } else if (patientId) {
       // Update patientId when creating a new allergy
       setFormData(prev => ({ ...prev, patientId }));
@@ -110,8 +108,7 @@ export function AllergyFormDialog({ isOpen, onClose, onSuccess, editingAllergy, 
           severity: formData.severity,
           reaction: formData.reaction,
           onsetDate: formData.onsetDate,
-          reportedBy: formData.reportedBy,
-        };
+          reportedBy: formData.reportedBy };
         await allergiesService.updateAllergy(editingAllergy.id, updateData);
         toast.success('Allergy updated successfully');
       } else {
@@ -127,8 +124,7 @@ export function AllergyFormDialog({ isOpen, onClose, onSuccess, editingAllergy, 
         severity: Severity.MILD,
         reaction: '',
         onsetDate: '',
-        reportedBy: '',
-      });
+        reportedBy: '' });
       setSelectedPatient(null);
       setSearchTerm('');
       setSearchResults([]);

@@ -4,9 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Eye, EyeOff, Loader2, Save, User, Settings, Shield, Mail, Phone, Lock } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Save, User, Shield, Mail, Phone, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
@@ -17,8 +16,7 @@ const profileSchema = z.object({
   phoneNumber: z.string().optional(),
   currentPassword: z.string().optional(),
   newPassword: z.string().optional(),
-  confirmPassword: z.string().optional(),
-}).refine((data) => {
+  confirmPassword: z.string().optional() }).refine((data) => {
   if (data.newPassword && !data.currentPassword) {
     return false;
   }
@@ -28,8 +26,7 @@ const profileSchema = z.object({
   return true;
 }, {
   message: 'Passwords do not match or current password is required',
-  path: ['confirmPassword'],
-});
+  path: ['confirmPassword'] });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
@@ -42,16 +39,13 @@ export function ProfilePage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ProfileFormData>({
+    formState: { errors, isSubmitting } } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
       email: user?.email || '',
-      phoneNumber: user?.phoneNumber || '',
-    },
-  });
+      phoneNumber: user?.phoneNumber || '' } });
 
   const getInitials = (firstName?: string, lastName?: string) => {
     return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
@@ -65,8 +59,7 @@ export function ProfilePage() {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          phoneNumber: data.phoneNumber,
-        });
+          phoneNumber: data.phoneNumber });
         toast.success('Profile updated successfully');
       }
     } catch (error: any) {
@@ -90,7 +83,7 @@ export function ProfilePage() {
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-white border-zinc-200 text-zinc-600 font-normal px-2.5 py-0.5">
-                  ID: {user?.userId?.split('-')[0]}
+                  ID: {user?.id?.split('-')[0]}
                 </Badge>
               </div>
             </div>

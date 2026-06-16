@@ -20,8 +20,7 @@ export function VitalSignsTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: VitalSignsTableProps) {
+  onPageChange }: VitalSignsTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

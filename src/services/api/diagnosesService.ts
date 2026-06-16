@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface Diagnosis {
   id: string;
@@ -49,86 +47,36 @@ export interface PaginatedResponse<T> {
 
 export const diagnosesService = {
   async getDiagnosisById(id: string): Promise<Diagnosis> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/diagnoses/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/diagnoses/${id}`);
     return response.data.data;
   },
 
   async getDiagnosesByMedicalRecordId(medicalRecordId: string): Promise<Diagnosis[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/diagnoses/medical-record/${medicalRecordId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/diagnoses/medical-record/${medicalRecordId}`);
     return response.data.data;
   },
 
-  async getDiagnosesByMedicalRecordIdPaginated(
-    medicalRecordId: string,
-    page = 0,
-    size = 10,
-    sortBy = 'diagnosisDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Diagnosis>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/diagnoses/medical-record/${medicalRecordId}/paginated`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getDiagnosesByMedicalRecordIdPaginated(medicalRecordId: string, page = 0, size = 10, sortBy = 'diagnosisDate', sortDirection = 'desc'): Promise<PaginatedResponse<Diagnosis>> {
+    const response = await apiClient.get(`/diagnoses/medical-record/${medicalRecordId}/paginated`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async searchMedicalRecordDiagnoses(
-    medicalRecordId: string,
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'diagnosisDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Diagnosis>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/diagnoses/medical-record/${medicalRecordId}/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async searchMedicalRecordDiagnoses(medicalRecordId: string, searchTerm: string, page = 0, size = 10, sortBy = 'diagnosisDate', sortDirection = 'desc'): Promise<PaginatedResponse<Diagnosis>> {
+    const response = await apiClient.get(`/diagnoses/medical-record/${medicalRecordId}/search`, { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async createDiagnosis(request: CreateDiagnosisRequest): Promise<Diagnosis> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/diagnoses`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.post('/diagnoses', request);
     return response.data.data;
   },
 
   async updateDiagnosis(id: string, request: UpdateDiagnosisRequest): Promise<Diagnosis> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/diagnoses/${id}`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.put(`/diagnoses/${id}`, request);
     return response.data.data;
   },
 
   async deleteDiagnosis(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/diagnoses/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await apiClient.delete(`/diagnoses/${id}`);
   },
 };

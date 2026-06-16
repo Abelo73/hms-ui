@@ -26,8 +26,7 @@ export function AppointmentsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadAppointments();
@@ -83,8 +82,7 @@ export function AppointmentsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Failed to load appointments:', error);
       toast.error('Failed to load appointments');
@@ -122,8 +120,7 @@ export function AppointmentsPage() {
       COMPLETED: 'bg-gray-100 text-gray-800',
       CANCELLED: 'bg-red-100 text-red-800',
       NO_SHOW: 'bg-orange-100 text-orange-800',
-      RESCHEDULED: 'bg-purple-100 text-purple-800',
-    };
+      RESCHEDULED: 'bg-purple-100 text-purple-800' };
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
@@ -132,8 +129,7 @@ export function AppointmentsPage() {
       LOW: 'bg-gray-100 text-gray-800',
       MEDIUM: 'bg-blue-100 text-blue-800',
       HIGH: 'bg-orange-100 text-orange-800',
-      URGENT: 'bg-red-100 text-red-800',
-    };
+      URGENT: 'bg-red-100 text-red-800' };
     return colors[priority] || 'bg-gray-100 text-gray-800';
   };
 

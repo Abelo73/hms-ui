@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface Diagnosis {
   id: string;
@@ -62,33 +60,21 @@ export interface CreateConsultationRequest {
 
 export const consultationService = {
   async createConsultation(request: CreateConsultationRequest): Promise<Consultation> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/consultations`, request, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.post('/consultations', request);
+    return response.data.data;
   },
 
   async getConsultation(id: string): Promise<Consultation> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/consultations/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.get(`/consultations/${id}`);
+    return response.data.data;
   },
 
   async getPatientConsultations(patientId: string): Promise<Consultation[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/consultations/patient/${patientId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
+    const response = await apiClient.get(`/consultations/patient/${patientId}`);
+    return response.data.data;
   },
 
   async finalizeConsultation(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.post(`${API_BASE_URL}/consultations/${id}/finalize`, {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await apiClient.post(`/consultations/${id}/finalize`);
   },
 };

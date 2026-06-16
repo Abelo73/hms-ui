@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+import apiClient from './axios';
 
 export interface Vaccination {
   id: string;
@@ -50,86 +48,36 @@ export interface PaginatedResponse<T> {
 
 export const vaccinationsService = {
   async getVaccinationById(id: string): Promise<Vaccination> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/vaccinations/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/vaccinations/${id}`);
     return response.data.data;
   },
 
   async getVaccinationsByPatientId(patientId: string): Promise<Vaccination[]> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/vaccinations/patient/${patientId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/vaccinations/patient/${patientId}`);
     return response.data.data;
   },
 
-  async getVaccinationsByPatientIdPaginated(
-    patientId: string,
-    page = 0,
-    size = 10,
-    sortBy = 'administrationDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Vaccination>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/vaccinations/patient/${patientId}/paginated`, {
-      params: { page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getVaccinationsByPatientIdPaginated(patientId: string, page = 0, size = 10, sortBy = 'administrationDate', sortDirection = 'desc'): Promise<PaginatedResponse<Vaccination>> {
+    const response = await apiClient.get(`/vaccinations/patient/${patientId}/paginated`, { params: { page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
-  async searchPatientVaccinations(
-    patientId: string,
-    searchTerm: string,
-    page = 0,
-    size = 10,
-    sortBy = 'administrationDate',
-    sortDirection = 'desc'
-  ): Promise<PaginatedResponse<Vaccination>> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.get(`${API_BASE_URL}/vaccinations/patient/${patientId}/search`, {
-      params: { searchTerm, page, size, sortBy, sortDirection },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async searchPatientVaccinations(patientId: string, searchTerm: string, page = 0, size = 10, sortBy = 'administrationDate', sortDirection = 'desc'): Promise<PaginatedResponse<Vaccination>> {
+    const response = await apiClient.get(`/vaccinations/patient/${patientId}/search`, { params: { searchTerm, page, size, sortBy, sortDirection } });
     return response.data.data;
   },
 
   async createVaccination(request: CreateVaccinationRequest): Promise<Vaccination> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.post(`${API_BASE_URL}/vaccinations`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.post('/vaccinations', request);
     return response.data.data;
   },
 
   async updateVaccination(id: string, request: UpdateVaccinationRequest): Promise<Vaccination> {
-    const token = localStorage.getItem('accessToken');
-    const response = await axios.put(`${API_BASE_URL}/vaccinations/${id}`, request, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.put(`/vaccinations/${id}`, request);
     return response.data.data;
   },
 
   async deleteVaccination(id: string): Promise<void> {
-    const token = localStorage.getItem('accessToken');
-    await axios.delete(`${API_BASE_URL}/vaccinations/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await apiClient.delete(`/vaccinations/${id}`);
   },
 };

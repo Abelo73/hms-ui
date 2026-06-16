@@ -14,8 +14,7 @@ export function RolesPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadRoles();
@@ -30,8 +29,7 @@ export function RolesPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Failed to load roles:', error);
       toast.error('Failed to load roles and permissions');

@@ -20,8 +20,7 @@ export function NursingShiftsTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: NursingShiftsTableProps) {
+  onPageChange }: NursingShiftsTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

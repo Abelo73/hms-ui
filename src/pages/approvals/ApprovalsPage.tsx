@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { ShieldCheck, UserCheck, Timer, FileSearch, Search, SlidersHorizontal } from 'lucide-react';
+import { UserCheck, Timer, FileSearch, Search, SlidersHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { approvalsService, type ApprovalRequest } from '@/services/api/approvalsService';
@@ -14,8 +14,7 @@ export function ApprovalsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadApprovals();
@@ -30,8 +29,7 @@ export function ApprovalsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Failed to load approvals:', error);
       toast.error('Failed to load pending requests');

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, FlaskConical, Beaker, CheckCircle, Clock } from 'lucide-react';
+import { FlaskConical, Beaker, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { laboratoryService, type LabTestRequest, type LabTestRequestItem } from '@/services/api/laboratoryService';
-import { toast } from 'sonner';
 import { LabResultEntryForm } from './components/LabResultEntryForm';
 
 export function LabWorklistPage() {
@@ -18,20 +17,8 @@ export function LabWorklistPage() {
   const loadWorklist = async () => {
     setLoading(true);
     try {
-      // In a real app, we'd have a specific worklist endpoint. 
-      // For now, let's assume we can fetch all recent requests.
-      // Since I only implemented getPatientRequests, I'll fetch some dummy data or 
-      // just assume we need a GET /api/laboratory/requests endpoint which I added to the controller.
-      // Wait, I only added getRequest(id) and getPatientRequests(patientId) to the service.
-      // I should have added a getAllRequests. Let me fix the backend first if needed.
-      // Actually, I'll just use a mock for now to show the UI structure if the data is missing.
-      const response = await fetch('http://localhost:8080/api/laboratory/requests/pending', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-      });
-      if (response.ok) {
-          const data = await response.json();
-          setRequests(data);
-      }
+      const data = await laboratoryService.getPendingRequests();
+      setRequests(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to load worklist');
     } finally {

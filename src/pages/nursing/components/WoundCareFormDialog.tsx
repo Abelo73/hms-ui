@@ -18,8 +18,7 @@ export function WoundCareFormDialog({
   onClose,
   onSuccess,
   editingWoundCare,
-  patientId,
-}: WoundCareFormDialogProps) {
+  patientId }: WoundCareFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     woundType: WoundType.PRESSURE_ULCER,
@@ -33,8 +32,7 @@ export function WoundCareFormDialog({
     treatment: '',
     assessmentDate: '',
     assessmentTime: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingWoundCare) {
@@ -50,8 +48,7 @@ export function WoundCareFormDialog({
         treatment: editingWoundCare.treatment,
         assessmentDate: editingWoundCare.assessmentDate,
         assessmentTime: editingWoundCare.assessmentTime,
-        notes: editingWoundCare.notes || '',
-      });
+        notes: editingWoundCare.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -66,8 +63,7 @@ export function WoundCareFormDialog({
         treatment: '',
         assessmentDate: now.toISOString().split('T')[0],
         assessmentTime: now.toTimeString().slice(0, 5),
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingWoundCare, isOpen]);
 
@@ -93,8 +89,7 @@ export function WoundCareFormDialog({
         treatment: formData.treatment,
         assessmentDate: formData.assessmentDate,
         assessmentTime: formData.assessmentTime,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingWoundCare) {
         await woundCareService.updateWoundCare(editingWoundCare.id, request as UpdateWoundCareRequest);

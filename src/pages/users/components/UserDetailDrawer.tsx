@@ -80,8 +80,7 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
   DOCTOR: ['PATIENT', 'APPOINTMENT', 'MEDICAL'],
   NURSE: ['PATIENT', 'APPOINTMENT', 'MEDICAL'],
   RECEPTIONIST: ['PATIENT', 'APPOINTMENT'],
-  BILLING_STAFF: ['PATIENT'],
-};
+  BILLING_STAFF: ['PATIENT'] };
 
 const ALL_ROLES = ['ADMIN', 'DOCTOR', 'NURSE', 'RECEPTIONIST', 'BILLING_STAFF'];
 
@@ -136,8 +135,7 @@ export function UserDetailDrawer({ isOpen, onClose, user }: UserDetailDrawerProp
       GET: 'bg-green-100 text-green-700',
       POST: 'bg-blue-100 text-blue-700',
       PUT: 'bg-yellow-100 text-yellow-700',
-      DELETE: 'bg-red-100 text-red-700',
-    };
+      DELETE: 'bg-red-100 text-red-700' };
     return colors[method] || 'bg-gray-100 text-gray-700';
   };
 

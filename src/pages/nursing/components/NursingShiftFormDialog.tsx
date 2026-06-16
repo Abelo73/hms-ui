@@ -18,8 +18,7 @@ export function NursingShiftFormDialog({
   onClose,
   onSuccess,
   editingShift,
-  nurseId,
-}: NursingShiftFormDialogProps) {
+  nurseId }: NursingShiftFormDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     shiftDate: '',
@@ -29,8 +28,7 @@ export function NursingShiftFormDialog({
     assignedUnit: '',
     status: ShiftRecordStatus.SCHEDULED,
     patientCount: 0,
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingShift) {
@@ -42,8 +40,7 @@ export function NursingShiftFormDialog({
         assignedUnit: editingShift.assignedUnit,
         status: editingShift.status as any,
         patientCount: editingShift.patientCount,
-        notes: editingShift.notes || '',
-      });
+        notes: editingShift.notes || '' });
     } else {
       const now = new Date();
       setFormData({
@@ -54,8 +51,7 @@ export function NursingShiftFormDialog({
         assignedUnit: '',
         status: ShiftRecordStatus.SCHEDULED,
         patientCount: 0,
-        notes: '',
-      });
+        notes: '' });
     }
   }, [editingShift, isOpen]);
 
@@ -77,8 +73,7 @@ export function NursingShiftFormDialog({
         assignedUnit: formData.assignedUnit,
         status: formData.status,
         patientCount: formData.patientCount,
-        notes: formData.notes || undefined,
-      };
+        notes: formData.notes || undefined };
 
       if (editingShift) {
         await nursingShiftsService.updateNursingShift(editingShift.id, request as UpdateNursingShiftRequest);

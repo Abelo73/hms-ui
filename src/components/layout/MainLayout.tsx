@@ -25,12 +25,17 @@ interface MainLayoutProps {
   children: ReactNode;
   /** Page title shown below stat cards */
   pageTitle?: string;
+  /** Alias for pageTitle */
+  title?: string;
+  /** Optional subtitle (ignored, kept for compat) */
+  subtitle?: string;
   /** Optional call to action element placed next to page title */
   pageAction?: ReactNode;
 }
 
-export function MainLayout({ children, pageTitle, pageAction }: MainLayoutProps) {
+export function MainLayout({ children, pageTitle, title, pageAction }: MainLayoutProps) {
   const { isCollapsed } = useSidebar();
+  const resolvedTitle = pageTitle || title;
 
   return (
     <div className="flex min-h-screen bg-zinc-50">
@@ -77,11 +82,11 @@ export function MainLayout({ children, pageTitle, pageAction }: MainLayoutProps)
           </div>
 
           {/* ── Page-level header ── */}
-          {(pageTitle || pageAction) && (
+          {(resolvedTitle || pageAction) && (
             <div className="flex items-center justify-between mb-5">
-              {pageTitle && (
+              {resolvedTitle && (
                 <h1 className="text-xl font-semibold text-zinc-900 tracking-tight">
-                  {pageTitle}
+                  {resolvedTitle}
                 </h1>
               )}
               {pageAction && <div>{pageAction}</div>}

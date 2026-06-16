@@ -1,30 +1,33 @@
-export enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
-  PREFER_NOT_TO_SAY = 'PREFER_NOT_TO_SAY',
-}
+export const Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER',
+  PREFER_NOT_TO_SAY: 'PREFER_NOT_TO_SAY',
+} as const;
+export type Gender = typeof Gender[keyof typeof Gender];
 
-export enum BloodType {
-  A_POSITIVE = 'A_POSITIVE',
-  A_NEGATIVE = 'A_NEGATIVE',
-  B_POSITIVE = 'B_POSITIVE',
-  B_NEGATIVE = 'B_NEGATIVE',
-  AB_POSITIVE = 'AB_POSITIVE',
-  AB_NEGATIVE = 'AB_NEGATIVE',
-  O_POSITIVE = 'O_POSITIVE',
-  O_NEGATIVE = 'O_NEGATIVE',
-  UNKNOWN = 'UNKNOWN',
-}
+export const BloodType = {
+  A_POSITIVE: 'A_POSITIVE',
+  A_NEGATIVE: 'A_NEGATIVE',
+  B_POSITIVE: 'B_POSITIVE',
+  B_NEGATIVE: 'B_NEGATIVE',
+  AB_POSITIVE: 'AB_POSITIVE',
+  AB_NEGATIVE: 'AB_NEGATIVE',
+  O_POSITIVE: 'O_POSITIVE',
+  O_NEGATIVE: 'O_NEGATIVE',
+  UNKNOWN: 'UNKNOWN',
+} as const;
+export type BloodType = typeof BloodType[keyof typeof BloodType];
 
-export enum PatientStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  ADMITTED = 'ADMITTED',
-  DISCHARGED = 'DISCHARGED',
-  DECEASED = 'DECEASED',
-  PENDING_REGISTRATION = 'PENDING_REGISTRATION',
-}
+export const PatientStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ADMITTED: 'ADMITTED',
+  DISCHARGED: 'DISCHARGED',
+  DECEASED: 'DECEASED',
+  PENDING_REGISTRATION: 'PENDING_REGISTRATION',
+} as const;
+export type PatientStatus = typeof PatientStatus[keyof typeof PatientStatus];
 
 export interface Patient {
   id: string;

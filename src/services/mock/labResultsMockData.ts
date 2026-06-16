@@ -1,4 +1,4 @@
-import { LabResult } from '../api/labResultsService';
+import type { LabResult } from '../api/labResultsService';
 
 export const mockLabResults: LabResult[] = [
   {

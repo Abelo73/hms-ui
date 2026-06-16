@@ -25,8 +25,7 @@ export function LabResultFormDialog({ isOpen, onClose, onSuccess, editingLabResu
     referenceRange: '',
     status: LabResultStatus.PENDING,
     performedBy: '',
-    notes: '',
-  });
+    notes: '' });
 
   useEffect(() => {
     if (editingLabResult) {
@@ -40,8 +39,7 @@ export function LabResultFormDialog({ isOpen, onClose, onSuccess, editingLabResu
         referenceRange: editingLabResult.referenceRange,
         status: editingLabResult.status,
         performedBy: editingLabResult.performedBy,
-        notes: editingLabResult.notes,
-      });
+        notes: editingLabResult.notes });
     } else if (patientId) {
       setFormData(prev => ({ ...prev, patientId }));
     }
@@ -62,8 +60,7 @@ export function LabResultFormDialog({ isOpen, onClose, onSuccess, editingLabResu
           referenceRange: formData.referenceRange,
           status: formData.status,
           performedBy: formData.performedBy,
-          notes: formData.notes,
-        };
+          notes: formData.notes };
         await labResultsService.updateLabResult(editingLabResult.id, updateData);
         toast.success('Lab result updated successfully');
       } else {
@@ -82,8 +79,7 @@ export function LabResultFormDialog({ isOpen, onClose, onSuccess, editingLabResu
         referenceRange: '',
         status: LabResultStatus.PENDING,
         performedBy: '',
-        notes: '',
-      });
+        notes: '' });
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to save lab result');
     } finally {

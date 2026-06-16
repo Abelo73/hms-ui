@@ -20,8 +20,7 @@ export function NursingCarePlansTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: NursingCarePlansTableProps) {
+  onPageChange }: NursingCarePlansTableProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">

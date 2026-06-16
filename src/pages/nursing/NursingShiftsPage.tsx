@@ -20,8 +20,7 @@ export function NursingShiftsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadShifts();
@@ -47,8 +46,7 @@ export function NursingShiftsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading nursing shifts:', error);
       toast.error('Failed to load nursing shifts');

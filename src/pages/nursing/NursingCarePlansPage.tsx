@@ -20,8 +20,7 @@ export function NursingCarePlansPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadCarePlans();
@@ -47,8 +46,7 @@ export function NursingCarePlansPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading care plans:', error);
       toast.error('Failed to load care plans');

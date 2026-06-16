@@ -21,8 +21,7 @@ export function AppointmentFormDialog({
   onClose,
   onSuccess,
   editingAppointment,
-  patientId,
-}: AppointmentFormDialogProps) {
+  patientId }: AppointmentFormDialogProps) {
   const [formData, setFormData] = useState({
     doctorId: '',
     appointmentType: 'CONSULTATION',
@@ -35,8 +34,7 @@ export function AppointmentFormDialog({
     symptoms: '',
     priority: 'MEDIUM',
     isVirtual: false,
-    meetingLink: '',
-  });
+    meetingLink: '' });
   const [loading, setLoading] = useState(false);
   const [doctors, setDoctors] = useState<User[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -58,8 +56,7 @@ export function AppointmentFormDialog({
         symptoms: editingAppointment.symptoms || '',
         priority: editingAppointment.priority || 'MEDIUM',
         isVirtual: editingAppointment.isVirtual,
-        meetingLink: editingAppointment.meetingLink || '',
-      });
+        meetingLink: editingAppointment.meetingLink || '' });
     } else {
       setFormData({
         doctorId: '',
@@ -73,8 +70,7 @@ export function AppointmentFormDialog({
         symptoms: '',
         priority: 'MEDIUM',
         isVirtual: false,
-        meetingLink: '',
-      });
+        meetingLink: '' });
     }
   }, [editingAppointment, isOpen]);
 
@@ -154,8 +150,7 @@ export function AppointmentFormDialog({
           symptoms: formData.symptoms || undefined,
           priority: formData.priority || undefined,
           isVirtual: formData.isVirtual,
-          meetingLink: formData.meetingLink || undefined,
-        };
+          meetingLink: formData.meetingLink || undefined };
         await appointmentsService.updateAppointment(editingAppointment.id, updateRequest);
         toast.success('Appointment updated successfully');
       } else {
@@ -172,8 +167,7 @@ export function AppointmentFormDialog({
           symptoms: formData.symptoms,
           priority: formData.priority,
           isVirtual: formData.isVirtual,
-          meetingLink: formData.meetingLink,
-        };
+          meetingLink: formData.meetingLink };
         await appointmentsService.createAppointment(createRequest);
         toast.success('Appointment created successfully');
       }

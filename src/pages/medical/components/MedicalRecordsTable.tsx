@@ -23,8 +23,7 @@ export function MedicalRecordsTable({
   onEdit,
   onDelete,
   pagination,
-  onPageChange,
-}: MedicalRecordsTableProps) {
+  onPageChange }: MedicalRecordsTableProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ACTIVE':
