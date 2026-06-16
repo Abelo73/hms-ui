@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -12,6 +12,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   PieChart,
   Shield,
   Activity,
@@ -36,6 +37,7 @@ export function Sidebar() {
   const location = useLocation();
   const { user, logout } = useAuth();
   const { isCollapsed, toggleSidebar } = useSidebar();
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const isAdmin = user?.roles?.includes('ADMIN');
 
@@ -49,6 +51,28 @@ export function Sidebar() {
 
   const getInitials = (firstName?: string, lastName?: string) => {
     return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+  };
+
+  // Effect to auto-expand the section containing the current route
+  useEffect(() => {
+    if (isCollapsed) {
+      setExpandedSection(null);
+      return;
+    }
+
+    const currentPath = location.pathname;
+    const activeSection = sections.find(section => 
+      section.items.some(item => item.path === currentPath)
+    );
+
+    if (activeSection) {
+      setExpandedSection(activeSection.id);
+    }
+  }, [location.pathname, isCollapsed]);
+
+  const toggleSection = (sectionId: string) => {
+    if (isCollapsed) return;
+    setExpandedSection(expandedSection === sectionId ? null : sectionId);
   };
 
   const sections = [
@@ -153,50 +177,71 @@ export function Sidebar() {
 
           {/* Navigation */}
           <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-zinc-200">
-            {sections.map((section) => (
-              <div key={section.id} className="mb-6 last:mb-0">
-                {!isCollapsed && (
-                  <div className="px-5 mb-2">
-                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.1em] leading-none">
-                      {section.label}
-                    </span>
-                  </div>
-                )}
-                <div className="space-y-0.5">
-                  {section.items.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = location.pathname === item.path;
+            {sections.map((section) => {
+              const isExpanded = expandedSection === section.id;
+              const hasActiveChild = section.items.some(item => location.pathname === item.path);
 
-                    return (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className={cn(
-                          "group relative flex items-center transition-all duration-200 mx-2 py-2 rounded-lg",
-                          isCollapsed ? "justify-center px-0" : "px-3",
-                          isActive
-                            ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
-                            : "text-zinc-500 hover:bg-zinc-100/80 hover:text-zinc-900"
-                        )}
-                        title={isCollapsed ? item.label : undefined}
-                      >
-                        <Icon className={cn(
-                          "size-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
-                          isCollapsed ? "" : "mr-2.5",
-                          isActive ? "text-white" : "text-zinc-400 group-hover:text-zinc-900"
-                        )} />
-                        {!isCollapsed && (
-                          <span className="text-sm font-medium truncate tracking-tight">{item.label}</span>
-                        )}
-                        {isActive && !isCollapsed && (
-                          <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-1 h-5 bg-zinc-900 rounded-r-full" />
-                        )}
-                      </Link>
-                    );
-                  })}
+              return (
+                <div key={section.id} className="mb-2 last:mb-0">
+                  {!isCollapsed ? (
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className={cn(
+                        "w-full flex items-center justify-between px-5 py-2 group transition-colors",
+                        hasActiveChild ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+                      )}
+                    >
+                      <span className="text-[10px] font-bold uppercase tracking-[0.1em] leading-none">
+                        {section.label}
+                      </span>
+                      <ChevronDown className={cn(
+                        "size-3 transition-transform duration-200",
+                        isExpanded ? "rotate-0" : "-rotate-90"
+                      )} />
+                    </button>
+                  ) : (
+                    <div className="border-t border-zinc-100 my-2 mx-3" />
+                  )}
+
+                  <div className={cn(
+                    "space-y-0.5 overflow-hidden transition-all duration-300 ease-in-out",
+                    isCollapsed || isExpanded ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0"
+                  )}>
+                    {section.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = location.pathname === item.path;
+
+                      return (
+                        <Link
+                          key={item.path}
+                          to={item.path}
+                          className={cn(
+                            "group relative flex items-center transition-all duration-200 mx-2 py-2 rounded-lg",
+                            isCollapsed ? "justify-center px-0" : "px-3",
+                            isActive
+                              ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
+                              : "text-zinc-500 hover:bg-zinc-100/80 hover:text-zinc-900"
+                          )}
+                          title={isCollapsed ? item.label : undefined}
+                        >
+                          <Icon className={cn(
+                            "size-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
+                            isCollapsed ? "" : "mr-2.5",
+                            isActive ? "text-white" : "text-zinc-400 group-hover:text-zinc-900"
+                          )} />
+                          {!isCollapsed && (
+                            <span className="text-sm font-medium truncate tracking-tight">{item.label}</span>
+                          )}
+                          {isActive && !isCollapsed && (
+                            <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-1 h-5 bg-zinc-900 rounded-r-full" />
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </nav>
 
           {/* User Profile */}
