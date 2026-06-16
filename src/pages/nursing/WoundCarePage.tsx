@@ -3,15 +3,15 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, Heart, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { woundCareService, type WoundCare, type PaginatedResponse } from '@/services/api/woundCareService';
+import { woundCareService, type WoundCare } from '@/services/api/woundCareService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { WoundCareTable } from './components/WoundCareTable';
 import { WoundCareFormDialog } from './components/WoundCareFormDialog';
 
 export function WoundCarePage() {
   const [woundCare, setWoundCare] = useState<WoundCare[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingWoundCare, setEditingWoundCare] = useState<WoundCare | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,8 +24,7 @@ export function WoundCarePage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadWoundCare();
@@ -57,8 +56,7 @@ export function WoundCarePage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading wound care records:', error);
       toast.error('Failed to load wound care records');
@@ -78,7 +76,7 @@ export function WoundCarePage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {

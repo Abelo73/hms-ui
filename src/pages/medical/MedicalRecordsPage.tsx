@@ -3,15 +3,15 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, FileText, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { medicalRecordsService, type MedicalRecord, type PaginatedResponse } from '@/services/api/medicalRecordsService';
+import { medicalRecordsService, type MedicalRecord } from '@/services/api/medicalRecordsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { MedicalRecordsTable } from './components/MedicalRecordsTable';
 import { MedicalRecordFormDialog } from './components/MedicalRecordFormDialog';
 
 export function MedicalRecordsPage() {
   const [medicalRecords, setMedicalRecords] = useState<MedicalRecord[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingMedicalRecord, setEditingMedicalRecord] = useState<MedicalRecord | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export function MedicalRecordsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
+    totalElements: 0
   });
 
   useEffect(() => {
@@ -42,23 +42,23 @@ export function MedicalRecordsPage() {
 
       const data = searchTerm
         ? await medicalRecordsService.searchPatientMedicalRecords(
-            selectedPatientId,
-            searchTerm,
-            pagination.page,
-            pagination.size
-          )
+          selectedPatientId,
+          searchTerm,
+          pagination.page,
+          pagination.size
+        )
         : await medicalRecordsService.getMedicalRecordsByPatientIdPaginated(
-            selectedPatientId,
-            pagination.page,
-            pagination.size
-          );
+          selectedPatientId,
+          pagination.page,
+          pagination.size
+        );
 
       setMedicalRecords(data.content);
       setPagination({
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
+        totalElements: data.totalElements
       });
     } catch (error) {
       console.error('Error loading medical records:', error);
@@ -79,7 +79,7 @@ export function MedicalRecordsPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {
@@ -135,9 +135,8 @@ export function MedicalRecordsPage() {
     setPagination({ ...pagination, page: newPage });
   };
 
-  const handleSizeChange = (newSize: number) => {
-    setPagination({ ...pagination, size: newSize, page: 0 });
-  };
+
+
 
   return (
     <MainLayout

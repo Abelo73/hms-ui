@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Activity } from 'lucide-react';
 import { toast } from 'sonner';
-import { vitalSignsService, type VitalSign, type PaginatedResponse } from '@/services/api/vitalSignsService';
+import { vitalSignsService, type VitalSign } from '@/services/api/vitalSignsService';
 import { type Patient } from '@/services/api/patientsService';
 import { VitalSignsTable } from './components/VitalSignsTable';
 import { VitalSignFormDialog } from './components/VitalSignFormDialog';
@@ -10,8 +10,8 @@ import { PatientSelector } from '@/components/patients/PatientSelector';
 
 export function VitalSignsPage() {
   const [vitalSigns, setVitalSigns] = useState<VitalSign[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingVitalSign, setEditingVitalSign] = useState<VitalSign | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -20,8 +20,7 @@ export function VitalSignsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadVitalSigns();
@@ -53,8 +52,7 @@ export function VitalSignsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading vital signs:', error);
       toast.error('Failed to load vital signs');

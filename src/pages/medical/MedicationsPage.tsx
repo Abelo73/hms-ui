@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, Plus, Pill, User, X } from 'lucide-react';
+import { Search, Plus, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { medicationsService, type Medication, type PaginatedResponse } from '@/services/api/medicationsService';
+import { medicationsService, type Medication } from '@/services/api/medicationsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { MedicationsTable } from './components/MedicationsTable';
 import { MedicationFormDialog } from './components/MedicationFormDialog';
 
 export function MedicationsPage() {
   const [medications, setMedications] = useState<Medication[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [_loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingMedication, setEditingMedication] = useState<Medication | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,8 +24,7 @@ export function MedicationsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadMedications();
@@ -57,8 +56,7 @@ export function MedicationsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Failed to load medications:', error);
       toast.error('Failed to load medications');
@@ -92,7 +90,7 @@ export function MedicationsPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {

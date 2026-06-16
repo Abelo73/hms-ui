@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, Plus, Stethoscope, User, History, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Stethoscope, User, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { consultationService, type Consultation } from '@/services/api/consultationService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
@@ -13,9 +13,9 @@ export function ConsultationsPage() {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [patientSearchTerm, setPatientSearchTerm] = useState('');
   const [patientSearchResults, setPatientSearchResults] = useState<Patient[]>([]);
-  const [searching, setSearching] = useState(false);
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [_searching, setSearching] = useState(false);
   const [loadingConsultations, setLoadingConsultations] = useState(false);
 
   const handlePatientSearch = async (term: string) => {
@@ -27,7 +27,7 @@ export function ConsultationsPage() {
     setSearching(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
     } catch (error) {
       console.error('Error searching patients:', error);

@@ -3,15 +3,15 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, Droplets, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { fluidBalanceService, type FluidBalance, type PaginatedResponse } from '@/services/api/fluidBalanceService';
+import { fluidBalanceService, type FluidBalance } from '@/services/api/fluidBalanceService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { FluidBalanceTable } from './components/FluidBalanceTable';
 import { FluidBalanceFormDialog } from './components/FluidBalanceFormDialog';
 
 export function FluidBalancePage() {
   const [fluidBalances, setFluidBalances] = useState<FluidBalance[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingFluidBalance, setEditingFluidBalance] = useState<FluidBalance | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,8 +24,7 @@ export function FluidBalancePage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadFluidBalances();
@@ -57,8 +56,7 @@ export function FluidBalancePage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading fluid balance records:', error);
       toast.error('Failed to load fluid balance records');
@@ -78,7 +76,7 @@ export function FluidBalancePage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {

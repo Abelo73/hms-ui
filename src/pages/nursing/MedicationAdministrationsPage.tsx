@@ -3,15 +3,15 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, Pill, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { medicationAdministrationsService, type MedicationAdministration, type PaginatedResponse } from '@/services/api/medicationAdministrationsService';
+import { medicationAdministrationsService, type MedicationAdministration } from '@/services/api/medicationAdministrationsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { MedicationAdministrationsTable } from './components/MedicationAdministrationsTable';
 import { MedicationAdministrationFormDialog } from './components/MedicationAdministrationFormDialog';
 
 export function MedicationAdministrationsPage() {
   const [administrations, setAdministrations] = useState<MedicationAdministration[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAdministration, setEditingAdministration] = useState<MedicationAdministration | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,8 +24,7 @@ export function MedicationAdministrationsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadAdministrations();
@@ -57,8 +56,7 @@ export function MedicationAdministrationsPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading medication administrations:', error);
       toast.error('Failed to load medication administrations');
@@ -78,7 +76,7 @@ export function MedicationAdministrationsPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {

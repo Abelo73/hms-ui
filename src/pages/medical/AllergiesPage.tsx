@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, Plus, AlertTriangle, User, X } from 'lucide-react';
+import { Search, Plus, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { allergiesService, type Allergy, type PaginatedResponse } from '@/services/api/allergiesService';
+import { allergiesService, type Allergy } from '@/services/api/allergiesService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { AllergiesTable } from './components/AllergiesTable';
 import { AllergyFormDialog } from './components/AllergyFormDialog.tsx';
 
 export function AllergiesPage() {
   const [allergies, setAllergies] = useState<Allergy[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAllergy, setEditingAllergy] = useState<Allergy | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [patientSearchTerm, setPatientSearchTerm] = useState('');
+  const [_loading, setLoading] = useState(true);
   const [patientSearchResults, setPatientSearchResults] = useState<Patient[]>([]);
   const [searchingPatient, setSearchingPatient] = useState(false);
   const [showPatientSearchResults, setShowPatientSearchResults] = useState(false);
@@ -24,7 +24,7 @@ export function AllergiesPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
+    totalElements: 0
   });
 
   useEffect(() => {
@@ -42,22 +42,22 @@ export function AllergiesPage() {
 
       const data = searchTerm
         ? await allergiesService.searchPatientAllergies(
-            selectedPatientId,
-            searchTerm,
-            pagination.page,
-            pagination.size
-          )
+          selectedPatientId,
+          searchTerm,
+          pagination.page,
+          pagination.size
+        )
         : await allergiesService.getAllergiesByPatientIdPaginated(
-            selectedPatientId,
-            pagination.page,
-            pagination.size
-          );
+          selectedPatientId,
+          pagination.page,
+          pagination.size
+        );
       setAllergies(data.content || []);
       setPagination({
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
+        totalElements: data.totalElements
       });
     } catch (error) {
       console.error('Failed to load allergies:', error);
@@ -92,9 +92,8 @@ export function AllergiesPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      // Handle both array and paginated response formats
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
-      setPatientSearchResults(patientsArray.slice(0, 5)); // Limit to top 5 recommendations
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
+      setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {
       console.error('Error searching patients:', error);

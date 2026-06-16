@@ -3,7 +3,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, FileText, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { diagnosesService, type Diagnosis, type PaginatedResponse } from '@/services/api/diagnosesService';
+import { diagnosesService, type Diagnosis } from '@/services/api/diagnosesService';
 import { medicalRecordsService, type MedicalRecord } from '@/services/api/medicalRecordsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { DiagnosesTable } from './components/DiagnosesTable';
@@ -11,8 +11,8 @@ import { DiagnosisFormDialog } from './components/DiagnosisFormDialog';
 
 export function DiagnosesPage() {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingDiagnosis, setEditingDiagnosis] = useState<Diagnosis | null>(null);
   const [selectedMedicalRecordId, setSelectedMedicalRecordId] = useState<string | null>(null);
@@ -26,8 +26,7 @@ export function DiagnosesPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
-  });
+    totalElements: 0 });
 
   useEffect(() => {
     loadDiagnoses();
@@ -60,8 +59,7 @@ export function DiagnosesPage() {
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
-      });
+        totalElements: data.totalElements });
     } catch (error) {
       console.error('Error loading diagnoses:', error);
       toast.error('Failed to load diagnoses');
@@ -82,7 +80,7 @@ export function DiagnosesPage() {
     try {
       // Search patients first, then get their medical records
       const patientResults = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(patientResults) ? patientResults : patientResults.content || [];
+      const patientsArray = Array.isArray(patientResults) ? patientResults : (patientResults as any).content ?? [];
       
       // Get medical records for each patient
       const allMedicalRecords: MedicalRecord[] = [];

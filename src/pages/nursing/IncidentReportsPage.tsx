@@ -3,15 +3,15 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Search, Plus, AlertTriangle, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { incidentReportsService, type IncidentReport, type PaginatedResponse } from '@/services/api/incidentReportsService';
+import { incidentReportsService, type IncidentReport } from '@/services/api/incidentReportsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { IncidentReportsTable } from './components/IncidentReportsTable';
 import { IncidentReportFormDialog } from './components/IncidentReportFormDialog';
 
 export function IncidentReportsPage() {
   const [reports, setReports] = useState<IncidentReport[]>([]);
+  const [searchTerm, _setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingReport, setEditingReport] = useState<IncidentReport | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export function IncidentReportsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
+    totalElements: 0
   });
 
   useEffect(() => {
@@ -42,22 +42,22 @@ export function IncidentReportsPage() {
 
       const data = searchTerm
         ? await incidentReportsService.searchIncidentReports(
-            searchTerm,
-            pagination.page,
-            pagination.size
-          )
+          searchTerm,
+          pagination.page,
+          pagination.size
+        )
         : await incidentReportsService.getIncidentReportsByPatientIdPaginated(
-            selectedPatientId,
-            pagination.page,
-            pagination.size
-          );
+          selectedPatientId,
+          pagination.page,
+          pagination.size
+        );
 
       setReports(data.content);
       setPagination({
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
+        totalElements: data.totalElements
       });
     } catch (error) {
       console.error('Error loading incident reports:', error);
@@ -78,7 +78,7 @@ export function IncidentReportsPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {

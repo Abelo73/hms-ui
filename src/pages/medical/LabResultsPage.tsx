@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Search, Plus, FlaskConical, User, X } from 'lucide-react';
+import { Search, Plus, User, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { labResultsService, type LabResult, type PaginatedResponse } from '@/services/api/labResultsService';
+import { labResultsService, type LabResult } from '@/services/api/labResultsService';
 import { patientsService, type Patient } from '@/services/api/patientsService';
 import { LabResultsTable } from './components/LabResultsTable';
 import { LabResultFormDialog } from './components/LabResultFormDialog';
 
 export function LabResultsPage() {
   const [labResults, setLabResults] = useState<LabResult[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [_loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingLabResult, setEditingLabResult] = useState<LabResult | null>(null);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export function LabResultsPage() {
     page: 0,
     size: 5,
     totalPages: 0,
-    totalElements: 0,
+    totalElements: 0
   });
 
   useEffect(() => {
@@ -42,22 +42,22 @@ export function LabResultsPage() {
 
       const data = searchTerm
         ? await labResultsService.searchPatientLabResults(
-            selectedPatientId,
-            searchTerm,
-            pagination.page,
-            pagination.size
-          )
+          selectedPatientId,
+          searchTerm,
+          pagination.page,
+          pagination.size
+        )
         : await labResultsService.getLabResultsByPatientIdPaginated(
-            selectedPatientId,
-            pagination.page,
-            pagination.size
-          );
+          selectedPatientId,
+          pagination.page,
+          pagination.size
+        );
       setLabResults(data.content || []);
       setPagination({
         page: data.number,
         size: data.size,
         totalPages: data.totalPages,
-        totalElements: data.totalElements,
+        totalElements: data.totalElements
       });
     } catch (error) {
       console.error('Failed to load lab results:', error);
@@ -92,7 +92,7 @@ export function LabResultsPage() {
     setSearchingPatient(true);
     try {
       const results = await patientsService.searchPatients(term);
-      const patientsArray = Array.isArray(results) ? results : results.content || [];
+      const patientsArray = Array.isArray(results) ? results : (results as any).content ?? [];
       setPatientSearchResults(patientsArray.slice(0, 5));
       setShowPatientSearchResults(true);
     } catch (error) {
@@ -308,3 +308,6 @@ export function LabResultsPage() {
     </MainLayout>
   );
 }
+// Removed dummy setLoading function as it was causing lint errors and is likely not needed or should be from useState
+
+
