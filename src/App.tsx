@@ -34,6 +34,9 @@ import { ConsultationsPage } from './pages/doctors/ConsultationsPage';
 import { LabWorklistPage } from './pages/laboratory/LabWorklistPage';
 import { InventoryPage } from './pages/inventory/InventoryPage';
 import { InventoryItemsPage } from './pages/inventory/InventoryItemsPage';
+import ProcurementPage from './pages/inventory/ProcurementPage';
+import StockLevelsPage from './pages/inventory/StockLevelsPage';
+import StockAlertsPage from './pages/inventory/StockAlertsPage';
 import { PrescriptionsPage } from './pages/pharmacy/PrescriptionsPage';
 import { DispensingPage } from './pages/pharmacy/DispensingPage';
 
@@ -54,6 +57,11 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="inventory" element={<InventoryPage />} />
+            <Route path="inventory/items" element={<InventoryItemsPage />} />
+            <Route path="inventory/procurement" element={<ProcurementPage />} />
+            <Route path="inventory/stock-levels" element={<StockLevelsPage />} />
+            <Route path="inventory/alerts" element={<StockAlertsPage />} />
             <Route
               path="/dashboard"
               element={

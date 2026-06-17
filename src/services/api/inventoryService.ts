@@ -24,8 +24,21 @@ export interface Item {
   requiresPrescription: boolean;
   isColdChain: boolean;
   imageUrl: string;
+  unitPrice: number;
+  purchasePrice: number;
   isActive: boolean;
   createdAt: string;
+}
+
+export interface PaginatedResponse<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }
 
 export interface CreateItemRequest {
@@ -38,10 +51,24 @@ export interface CreateItemRequest {
   brand: string;
   unitOfMeasure: string;
   packSize: number;
+  unitPrice: number;
+  purchasePrice: number;
+  minimumOrderQuantity?: number;
+  reorderLevel?: number;
+  safetyStock?: number;
+  maximumStock?: number;
+  leadTimeDays?: number;
+  shelfLifeDays?: number;
+  storageConditions?: string;
+  isControlledSubstance?: boolean;
+  requiresPrescription?: boolean;
+  isColdChain?: boolean;
+  imageUrl?: string;
+  specifications?: string;
 }
 
 export const inventoryService = {
-  async getAllItems(params?: { category?: string; itemType?: ItemType; status?: string; page?: number; size?: number }): Promise<any> {
+  async getAllItems(params?: { category?: string; itemType?: ItemType; status?: string; page?: number; size?: number }): Promise<PaginatedResponse<Item>> {
     const response = await apiClient.get('/inventory/items', { params });
     return response.data.data;
   },
@@ -56,7 +83,7 @@ export const inventoryService = {
     return response.data.data;
   },
 
-  async searchItems(query: string, page = 0, size = 10): Promise<any> {
+  async searchItems(query: string, page = 0, size = 8): Promise<PaginatedResponse<Item>> {
     const response = await apiClient.get('/inventory/items/search', { params: { query, page, size } });
     return response.data.data;
   },
