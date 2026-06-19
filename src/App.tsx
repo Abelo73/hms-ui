@@ -39,6 +39,19 @@ import StockLevelsPage from './pages/inventory/StockLevelsPage';
 import StockAlertsPage from './pages/inventory/StockAlertsPage';
 import { PrescriptionsPage } from './pages/pharmacy/PrescriptionsPage';
 import { DispensingPage } from './pages/pharmacy/DispensingPage';
+import { EmployeesPage } from './pages/hr/EmployeesPage';
+import { LeaveRequestsPage } from './pages/hr/LeaveRequestsPage';
+import { AttendancePage } from './pages/hr/AttendancePage';
+import { PayrollPage } from './pages/hr/PayrollPage';
+import { PerformanceReviewPage } from './pages/hr/PerformanceReviewPage';
+import { RecruitmentPage } from './pages/hr/RecruitmentPage';
+import { TrainingPage } from './pages/hr/TrainingPage';
+import { BenefitsPage } from './pages/hr/BenefitsPage';
+import { CompliancePage } from './pages/hr/CompliancePage';
+import { BranchesPage } from './pages/hr/BranchesPage';
+import { SalaryGradesPage } from './pages/hr/SalaryGradesPage';
+import { PositionsPage } from './pages/hr/PositionsPage';
+import { DepartmentsPage } from './pages/hr/DepartmentsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -283,6 +296,110 @@ function App() {
               element={
                 <ProtectedRoute>
                   <DispensingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/employees"
+              element={
+                <ProtectedRoute>
+                  <EmployeesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/leave-requests"
+              element={
+                <ProtectedRoute>
+                  <LeaveRequestsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/attendance"
+              element={
+                <ProtectedRoute>
+                  <AttendancePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/payroll"
+              element={
+                <ProtectedRoute>
+                  <PayrollPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/performance-reviews"
+              element={
+                <ProtectedRoute>
+                  <PerformanceReviewPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/recruitment"
+              element={
+                <ProtectedRoute>
+                  <RecruitmentPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/training"
+              element={
+                <ProtectedRoute>
+                  <TrainingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/benefits"
+              element={
+                <ProtectedRoute>
+                  <BenefitsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/compliance"
+              element={
+                <ProtectedRoute>
+                  <CompliancePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/branches"
+              element={
+                <ProtectedRoute>
+                  <BranchesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/salary-grades"
+              element={
+                <ProtectedRoute>
+                  <SalaryGradesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/positions"
+              element={
+                <ProtectedRoute>
+                  <PositionsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/departments"
+              element={
+                <ProtectedRoute>
+                  <DepartmentsPage />
                 </ProtectedRoute>
               }
             />

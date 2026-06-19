@@ -28,7 +28,13 @@ import {
   Stethoscope,
   Beaker,
   Package,
-  Truck
+  Truck,
+  Briefcase,
+  CalendarDays,
+  DollarSign,
+  Star,
+  GraduationCap,
+  ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { useSidebar } from '@/contexts/SidebarContext';
@@ -148,6 +154,21 @@ export function Sidebar() {
         { icon: Pill, label: 'Prescriptions', path: '/pharmacy/prescriptions' },
         { icon: Activity, label: 'Dispensing', path: '/pharmacy/prescriptions' }, // Link to same list for now
         { icon: Beaker, label: 'Drug Catalog', path: '/pharmacy/drugs' },
+      ]
+    },
+    {
+      id: 'hr',
+      label: 'Human Resources',
+      items: [
+        { icon: Briefcase, label: 'Employees', path: '/hr/employees' },
+        { icon: CalendarDays, label: 'Leave Requests', path: '/hr/leave-requests' },
+        { icon: Clock, label: 'Attendance', path: '/hr/attendance' },
+        { icon: DollarSign, label: 'Payroll', path: '/hr/payroll' },
+        { icon: Star, label: 'Performance Reviews', path: '/hr/performance-reviews' },
+        { icon: Briefcase, label: 'Recruitment', path: '/hr/recruitment' },
+        { icon: GraduationCap, label: 'Training', path: '/hr/training' },
+        { icon: Heart, label: 'Benefits', path: '/hr/benefits' },
+        { icon: ShieldCheck, label: 'Compliance', path: '/hr/compliance' },
       ]
     },
     {
