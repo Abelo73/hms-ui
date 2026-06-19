@@ -349,12 +349,13 @@ export const hrService = {
   async getPayroll(page = 0, size = 10, params?: { employeeId?: string; status?: string; payPeriodStart?: string; payPeriodEnd?: string }): Promise<PaginatedResponse<Payroll>> {
     const response = await apiClient.get('/hr/payroll', { params: { page, size, ...params } });
     const data = response.data.data;
+    const list = Array.isArray(data) ? data : [];
     return {
-      content: Array.isArray(data) ? data : [],
+      content: list,
       number: page,
       size,
-      totalPages: 1,
-      totalElements: Array.isArray(data) ? data.length : 0,
+      totalPages: Math.max(1, Math.ceil(list.length / size)),
+      totalElements: list.length,
     };
   },
 
@@ -375,13 +376,8 @@ export const hrService = {
   async getPerformanceReviews(page = 0, size = 10, params?: { employeeId?: string; reviewerId?: string }): Promise<PaginatedResponse<PerformanceReview>> {
     const response = await apiClient.get('/hr/performance-reviews', { params: { page, size, ...params } });
     const data = response.data.data;
-    return {
-      content: Array.isArray(data) ? data : [],
-      number: page,
-      size,
-      totalPages: 1,
-      totalElements: Array.isArray(data) ? data.length : 0,
-    };
+    const list = Array.isArray(data) ? data : [];
+    return { content: list, number: page, size, totalPages: Math.max(1, Math.ceil(list.length / size)), totalElements: list.length };
   },
 
   async createPerformanceReview(request: Partial<PerformanceReview>): Promise<PerformanceReview> {
@@ -397,13 +393,8 @@ export const hrService = {
   async getRecruitment(page = 0, size = 10, params?: { status?: string; department?: string }): Promise<PaginatedResponse<Recruitment>> {
     const response = await apiClient.get('/hr/recruitment', { params: { page, size, ...params } });
     const data = response.data.data;
-    return {
-      content: Array.isArray(data) ? data : [],
-      number: page,
-      size,
-      totalPages: 1,
-      totalElements: Array.isArray(data) ? data.length : 0,
-    };
+    const list = Array.isArray(data) ? data : [];
+    return { content: list, number: page, size, totalPages: Math.max(1, Math.ceil(list.length / size)), totalElements: list.length };
   },
 
   async createRecruitment(request: Partial<Recruitment>): Promise<Recruitment> {
@@ -419,13 +410,8 @@ export const hrService = {
   async getTraining(page = 0, size = 10, params?: { status?: string; trainingType?: string }): Promise<PaginatedResponse<Training>> {
     const response = await apiClient.get('/hr/training', { params: { page, size, ...params } });
     const data = response.data.data;
-    return {
-      content: Array.isArray(data) ? data : [],
-      number: page,
-      size,
-      totalPages: 1,
-      totalElements: Array.isArray(data) ? data.length : 0,
-    };
+    const list = Array.isArray(data) ? data : [];
+    return { content: list, number: page, size, totalPages: Math.max(1, Math.ceil(list.length / size)), totalElements: list.length };
   },
 
   async createTraining(request: Partial<Training>): Promise<Training> {
@@ -458,13 +444,8 @@ export const hrService = {
   async getBenefits(page = 0, size = 10, params?: { employeeId?: string; benefitType?: string }): Promise<PaginatedResponse<Benefits>> {
     const response = await apiClient.get('/hr/benefits', { params: { page, size, ...params } });
     const data = response.data.data;
-    return {
-      content: Array.isArray(data) ? data : [],
-      number: page,
-      size,
-      totalPages: 1,
-      totalElements: Array.isArray(data) ? data.length : 0,
-    };
+    const list = Array.isArray(data) ? data : [];
+    return { content: list, number: page, size, totalPages: Math.max(1, Math.ceil(list.length / size)), totalElements: list.length };
   },
 
   async createBenefits(request: Partial<Benefits>): Promise<Benefits> {

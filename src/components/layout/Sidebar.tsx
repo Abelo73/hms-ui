@@ -34,7 +34,9 @@ import {
   DollarSign,
   Star,
   GraduationCap,
-  ShieldCheck
+  ShieldCheck,
+  Building2,
+  Network,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { useSidebar } from '@/contexts/SidebarContext';
@@ -169,6 +171,10 @@ export function Sidebar() {
         { icon: GraduationCap, label: 'Training', path: '/hr/training' },
         { icon: Heart, label: 'Benefits', path: '/hr/benefits' },
         { icon: ShieldCheck, label: 'Compliance', path: '/hr/compliance' },
+        { icon: Building2, label: 'Branches', path: '/hr/branches' },
+        { icon: Network, label: 'Departments', path: '/hr/departments' },
+        { icon: Briefcase, label: 'Positions', path: '/hr/positions' },
+        { icon: DollarSign, label: 'Salary Grades', path: '/hr/salary-grades' },
       ]
     },
     {
