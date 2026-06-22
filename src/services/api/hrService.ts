@@ -60,6 +60,24 @@ export interface DepartmentDTO {
   createdBy?: string;
 }
 
+export interface HrDashboardKPIs {
+  totalEmployees: number;
+  activeEmployees: number;
+  inactiveEmployees: number;
+  onLeaveToday: number;
+  newHiresThisMonth: number;
+  pendingLeaveRequests: number;
+  openVacancies: number;
+  totalPayrollThisMonth: number;
+  presentToday: number;
+  absentToday: number;
+  lateToday: number;
+  upcomingBirthdays: Array<{ employeeId: string; name: string; dateOfBirth: string; department: string }>;
+  departmentHeadcount: Array<{ name: string; count: number }>;
+  employeeTypeDistribution: Array<{ name: string; value: number }>;
+  monthlyLeavesTrend: Array<{ month: string; leaves: number }>;
+}
+
 export interface Employee {
   id: string;
   employeeNumber: string;
@@ -558,5 +576,11 @@ export const hrService = {
   },
   async deleteDepartment(id: string): Promise<void> {
     await apiClient.delete(`/hr/departments/${id}`);
+  },
+
+  // ── HR Dashboard ──────────────────────────────────────────────────────────
+  async getHrDashboardKpis(): Promise<HrDashboardKPIs> {
+    const response = await apiClient.get('/hr/dashboard/kpis');
+    return response.data.data;
   },
 };
