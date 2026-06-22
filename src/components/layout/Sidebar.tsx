@@ -162,6 +162,7 @@ export function Sidebar() {
       id: 'hr',
       label: 'Human Resources',
       items: [
+        { icon: LayoutDashboard, label: 'HR Dashboard', path: '/hr/dashboard' },
         { icon: Briefcase, label: 'Employees', path: '/hr/employees' },
         { icon: CalendarDays, label: 'Leave Requests', path: '/hr/leave-requests' },
         { icon: Clock, label: 'Attendance', path: '/hr/attendance' },

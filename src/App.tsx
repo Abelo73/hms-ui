@@ -48,6 +48,7 @@ import { RecruitmentPage } from './pages/hr/RecruitmentPage';
 import { TrainingPage } from './pages/hr/TrainingPage';
 import { BenefitsPage } from './pages/hr/BenefitsPage';
 import { CompliancePage } from './pages/hr/CompliancePage';
+import { HrDashboardPage } from './pages/hr/HrDashboardPage';
 import { BranchesPage } from './pages/hr/BranchesPage';
 import { SalaryGradesPage } from './pages/hr/SalaryGradesPage';
 import { PositionsPage } from './pages/hr/PositionsPage';
@@ -304,6 +305,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <EmployeesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/hr/dashboard"
+              element={
+                <ProtectedRoute>
+                  <HrDashboardPage />
                 </ProtectedRoute>
               }
             />
