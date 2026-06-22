@@ -9,21 +9,16 @@ export function LoginPage() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
+    if (isAuthenticated) navigate('/dashboard');
   }, [isAuthenticated, navigate]);
 
-  if (isAuthenticated) {
-    return null;
-  }
+  if (isAuthenticated) return null;
 
   return (
-    <AuthLayout>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-        <p className="text-gray-600">Sign in to your account</p>
-      </div>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to your account to continue"
+    >
       <LoginForm />
     </AuthLayout>
   );

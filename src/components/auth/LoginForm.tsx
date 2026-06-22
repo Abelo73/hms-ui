@@ -7,87 +7,91 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { loginSchema, type LoginFormData } from '@/lib/validation/schemas';
 
+const inputClass =
+  'w-full h-11 px-3.5 border border-zinc-200 rounded-lg text-sm text-zinc-900 placeholder:text-zinc-400 bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/8 focus:border-zinc-900 transition-colors';
+
+const labelClass = 'block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5';
+
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data);
-      toast.success('Login successful');
+      toast.success('Signed in successfully');
       navigate('/dashboard');
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Login failed';
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || 'Invalid credentials');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div>
-        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-          Username
-        </label>
+        <label htmlFor="username" className={labelClass}>Username</label>
         <input
           id="username"
           type="text"
           {...register('username')}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-          placeholder="Enter your username"
+          className={inputClass}
+          placeholder="your.username"
+          autoComplete="username"
         />
         {errors.username && (
-          <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
+          <p className="mt-1.5 text-xs text-red-500">{errors.username.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-          Password
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label htmlFor="password" className={labelClass} style={{ marginBottom: 0 }}>Password</label>
+          <Link to="/forgot-password" className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors">
+            Forgot password?
+          </Link>
+        </div>
         <div className="relative">
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors pr-12"
-            placeholder="Enter your password"
+            className={`${inputClass} pr-11`}
+            placeholder="••••••••"
+            autoComplete="current-password"
           />
           <button
             type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            onClick={() => setShowPassword(v => !v)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors"
           >
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
         {errors.password && (
-          <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+          <p className="mt-1.5 text-xs text-red-500">{errors.password.message}</p>
         )}
       </div>
 
-      <div className="flex items-center justify-between">
-        <label className="flex items-center">
-          <input type="checkbox" className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary" />
-          <span className="ml-2 text-sm text-gray-600">Remember me</span>
+      <div className="flex items-center gap-2">
+        <input
+          id="remember"
+          type="checkbox"
+          className="w-4 h-4 rounded border-zinc-300 accent-zinc-900 cursor-pointer"
+        />
+        <label htmlFor="remember" className="text-xs text-zinc-600 cursor-pointer select-none">
+          Keep me signed in
         </label>
-        <Link to="/forgot-password" className="text-sm text-primary hover:text-primary-600">
-          Forgot password?
-        </Link>
       </div>
 
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-950 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
       >
         {isLoading ? (
           <>
@@ -95,18 +99,16 @@ export function LoginForm() {
             Signing in...
           </>
         ) : (
-          'Sign In'
+          'Sign in'
         )}
       </button>
 
-      <div className="text-center">
-        <p className="text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-primary hover:text-primary-600 font-medium">
-            Register
-          </Link>
-        </p>
-      </div>
+      <p className="text-center text-sm text-zinc-500 pt-1">
+        No account yet?{' '}
+        <Link to="/register" className="text-zinc-900 font-semibold hover:underline">
+          Create one
+        </Link>
+      </p>
     </form>
   );
 }
